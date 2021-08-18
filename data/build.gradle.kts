@@ -9,6 +9,8 @@ java {
 }
 
 dependencies {
+    implementation(project(":domain"))
+
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
     testImplementation("org.assertj:assertj-core:3.18.0")
