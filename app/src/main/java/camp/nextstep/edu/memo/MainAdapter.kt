@@ -16,4 +16,11 @@ class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun replaceItems(items: List<Memo>) {
+        this.items.run {
+            clear()
+            addAll(items)
+        }
+    }
 }

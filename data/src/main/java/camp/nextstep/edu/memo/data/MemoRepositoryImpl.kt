@@ -4,7 +4,7 @@ import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import camp.nextstep.edu.memo.domain.entity.Memo
 
 class MemoRepositoryImpl(
-    private val service: MemoService
+    private val service: MemoService = MemoService()
 ) : MemoRepository {
 
     override fun save(memo: Memo) {
