@@ -2,14 +2,22 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="camp.nextstep.edu.memo.MemoWriteViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_memo_write"
+        <EditText
+            android:id="@+id/et_memo_write"
             android:layout_width="0dp"
             android:layout_height="80dp"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -19,16 +27,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:onClick="@{() -> viewModel.saveMemo(``)}"
             android:text="@string/cancel"
             app:layout_constraintEnd_toStartOf="@id/btn_memo_write_confirm"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_memo_write" />
+            app:layout_constraintTop_toBottomOf="@id/et_memo_write" />
 
         <Button
             android:id="@+id/btn_memo_write_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.saveMemo(etMemoWrite.getText().toString())}"
             android:text="@string/confirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_memo_write_cancel"
