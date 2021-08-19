@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import camp.nextstep.edu.memo.MemoWriteActivity
+import camp.nextstep.edu.memo.write.MemoWriteActivity
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collect

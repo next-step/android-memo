@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="camp.nextstep.edu.memo.MemoWriteViewModel" />
+            type="camp.nextstep.edu.memo.write.MemoWriteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

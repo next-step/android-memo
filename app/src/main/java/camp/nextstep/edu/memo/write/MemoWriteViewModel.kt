@@ -1,6 +1,7 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.write
 
 import androidx.lifecycle.ViewModel
+import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.data.MemoRepositoryImpl
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository

@@ -1,5 +1,6 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.write
 
+import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import io.mockk.mockk
