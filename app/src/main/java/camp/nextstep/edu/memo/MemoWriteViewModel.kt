@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class MemoWriteViewModel(
-    private val memoRepository: MemoRepository = MemoRepositoryImpl()
+    private val memoRepository: MemoRepository = MemoRepositoryImpl.getInstance()
 ) : ViewModel() {
 
     private val _isSavedMemo = MutableStateFlow<MemoEvent>(MemoEvent.None)

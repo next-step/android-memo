@@ -12,4 +12,15 @@ class MemoService {
     }
 
     fun fetch(): List<Memo> = memoList.toList()
+
+    companion object {
+        @Volatile
+        private var instance: MemoService? = null
+
+        fun getInstance(): MemoService = instance ?: synchronized(this) {
+            instance ?: MemoService().also {
+                instance = it
+            }
+        }
+    }
 }
