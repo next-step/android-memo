@@ -1,6 +1,7 @@
 package camp.nextstep.edu.memo
 
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -22,14 +23,31 @@ class MainActivity : AppCompatActivity() {
 
         setupBinding()
         setupRecyclerView()
+        setupListener()
         setupObserver()
         showContent()
+    }
+
+    private fun setupListener() {
+        binding.buttonCreate.setOnClickListener {
+            activityResultRegistry
+                .register(
+                    KEY_MEMO_WRITE,
+                    ActivityResultContracts.StartActivityForResult()
+                ) {
+                    if (it.resultCode != RESULT_OK) return@register
+                    showContent()
+                }
+                .launch(MemoWriteActivity.intent(this))
+        }
     }
 
     private fun setupObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.memoList.collect(mainAdapter::replaceItems)
+                viewModel.memoList.collect {
+                    mainAdapter.replaceItems(it)
+                }
             }
         }
     }
@@ -46,5 +64,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+    }
+
+    companion object {
+        private const val KEY_MEMO_WRITE = "key_memo_write"
     }
 }
