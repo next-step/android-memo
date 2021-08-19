@@ -1,6 +1,6 @@
 package camp.nextstep.edu.memo.data
 
-import camp.nextstep.edu.memo.domain.MemoRepository
+import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import camp.nextstep.edu.memo.domain.entity.Memo
 
 class MemoRepositoryImpl(

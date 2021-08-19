@@ -1,4 +1,4 @@
-package camp.nextstep.edu.memo.domain
+package camp.nextstep.edu.memo.domain.repository
 
 import camp.nextstep.edu.memo.domain.entity.Memo
 
