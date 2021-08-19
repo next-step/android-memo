@@ -1,4 +1,4 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.main
 
 import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.memo.data.MemoRepositoryImpl

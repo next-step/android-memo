@@ -1,4 +1,4 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.main
 
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import camp.nextstep.edu.memo.MemoWriteActivity
+import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

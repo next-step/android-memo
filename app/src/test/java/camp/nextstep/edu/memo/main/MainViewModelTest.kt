@@ -1,7 +1,8 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.main
 
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
+import camp.nextstep.edu.memo.main.MainViewModel
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals

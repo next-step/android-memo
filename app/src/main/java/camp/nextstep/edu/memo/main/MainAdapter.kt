@@ -1,4 +1,4 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.main
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

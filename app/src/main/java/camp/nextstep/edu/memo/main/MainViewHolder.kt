@@ -1,8 +1,9 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ItemMemoBinding
 import camp.nextstep.edu.memo.domain.entity.Memo
 
