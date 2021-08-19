@@ -52,6 +52,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha03")
+    implementation("androidx.fragment:fragment-ktx:1.3.6")
 
     testImplementation("org.junit.jupiter:junit-jupiter:$junit5Version")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junit5Version") // junit4 지원
