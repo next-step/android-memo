@@ -10,4 +10,6 @@ class MemoService {
     fun save(memo: Memo) {
         _memoList.add(memo)
     }
+
+    fun fetch(): List<Memo> = memoList.toList()
 }
