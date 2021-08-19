@@ -3,8 +3,6 @@ package camp.nextstep.edu.memo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
-import camp.nextstep.edu.memo.data.MemoRepositoryImpl
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,6 +13,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setupBinding()
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() = with(binding.recyclerView) {
+        adapter = MainAdapter()
+        setHasFixedSize(true)
     }
 
     private fun setupBinding() {
