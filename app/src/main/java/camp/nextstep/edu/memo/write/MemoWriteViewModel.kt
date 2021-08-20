@@ -23,4 +23,8 @@ class MemoWriteViewModel(
         memoRepository.save(memo = Memo(memo))
         _isSavedMemo.value = MemoEvent.Write
     }
+
+    fun cancel() {
+        _isSavedMemo.value = MemoEvent.Cancel
+    }
 }
