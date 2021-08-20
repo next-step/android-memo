@@ -40,7 +40,7 @@ class MemoWriteActivity : AppCompatActivity() {
                             setResult(RESULT_CANCELED)
                             finish()
                         }
-                        else -> Unit
+                        MemoEvent.None -> Unit
                     }
                 }
             }
