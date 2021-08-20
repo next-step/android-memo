@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import camp.nextstep.edu.memo.write.MemoWriteActivity
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
+import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -45,11 +46,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObserver() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.memoList.collect {
-                    mainAdapter.replaceItems(it)
-                }
+        launchAndRepeatOnLifecycle(scope = lifecycleScope, owner = this) {
+            viewModel.memoList.collect {
+                mainAdapter.replaceItems(it)
             }
         }
     }

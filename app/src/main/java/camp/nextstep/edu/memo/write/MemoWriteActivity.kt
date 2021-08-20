@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMemoWriteBinding
+import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -28,20 +29,18 @@ class MemoWriteActivity : AppCompatActivity() {
     }
 
     private fun setupObserver() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isSavedMemo.collect {
-                    when (it) {
-                        MemoEvent.Write -> {
-                            setResult(RESULT_OK)
-                            finish()
-                        }
-                        MemoEvent.Cancel -> {
-                            setResult(RESULT_CANCELED)
-                            finish()
-                        }
-                        MemoEvent.None -> Unit
+        launchAndRepeatOnLifecycle(scope = lifecycleScope, owner = this) {
+            viewModel.isSavedMemo.collect {
+                when (it) {
+                    MemoEvent.Write -> {
+                        setResult(RESULT_OK)
+                        finish()
                     }
+                    MemoEvent.Cancel -> {
+                        setResult(RESULT_CANCELED)
+                        finish()
+                    }
+                    MemoEvent.None -> Unit
                 }
             }
         }
