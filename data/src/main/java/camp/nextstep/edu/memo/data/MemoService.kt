@@ -5,13 +5,12 @@ import camp.nextstep.edu.memo.domain.entity.Memo
 class MemoService {
 
     private val _memoList = mutableListOf<Memo>()
-    val memoList: List<Memo> get() = _memoList
 
     fun save(memo: Memo) {
         _memoList.add(memo)
     }
 
-    fun fetch(): List<Memo> = memoList.toList()
+    fun fetch(): List<Memo> = _memoList.toList()
 
     companion object {
         @Volatile

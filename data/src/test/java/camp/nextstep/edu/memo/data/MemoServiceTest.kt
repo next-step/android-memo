@@ -12,12 +12,16 @@ internal class MemoServiceTest {
 
     @Test
     fun `작성한 메모를 저장합니다`() {
-        memoService = MemoService()
+        memoService = MemoService.getInstance()
         val memo = Memo("메모 작성")
 
         memoService.save(memo)
 
-        assertThat(memoService.memoList.first()).isEqualTo(memo)
+        val actual = memoService
+            .fetch()
+            .first()
+
+        assertThat(actual).isEqualTo(memo)
     }
 
     @Test
