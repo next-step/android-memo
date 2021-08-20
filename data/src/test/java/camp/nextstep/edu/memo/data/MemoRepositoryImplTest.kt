@@ -37,7 +37,9 @@ internal class MemoRepositoryImplTest {
             memoService.fetch()
         } returns memoList
 
-        Assertions.assertThat(memoService.fetch()).isEqualTo(memoList)
+        val actual = repository.fetch()
+
+        Assertions.assertThat(actual).isEqualTo(memoList)
     }
 
 }
