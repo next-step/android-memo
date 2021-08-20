@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class MemoRepositoryImplTest {
@@ -13,9 +14,13 @@ internal class MemoRepositoryImplTest {
     private val memoService: MemoService = mockk(relaxed = true)
     private lateinit var repository: MemoRepository
 
+    @BeforeEach
+    fun setup() {
+        repository = MemoRepositoryImpl(service = memoService)
+    }
+
     @Test
     fun `작성한 메모를 저장합니다`() {
-        repository = MemoRepositoryImpl(service = memoService)
         val memo = Memo("메모 작성")
 
         repository.save(memo)
@@ -27,7 +32,6 @@ internal class MemoRepositoryImplTest {
 
     @Test
     fun `작성된 메모들을 불러옵니다`() {
-        repository = MemoRepositoryImpl(service = memoService)
         val memoList = listOf(
             Memo("메모1"),
             Memo("메모2")
