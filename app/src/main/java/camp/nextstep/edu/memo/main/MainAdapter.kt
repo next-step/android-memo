@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import camp.nextstep.edu.memo.domain.entity.Memo
 
 class MainAdapter(
-    val onClick: (position: Int) -> Unit
+    val onUpdate: (position: Int) -> Unit
 ) : RecyclerView.Adapter<MainViewHolder>() {
 
     private val items = mutableListOf<Memo>()
@@ -13,7 +13,7 @@ class MainAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder =
         MainViewHolder(parent = parent).apply {
             itemView.setOnClickListener {
-                onClick(adapterPosition)
+                onUpdate(adapterPosition)
             }
         }
 
