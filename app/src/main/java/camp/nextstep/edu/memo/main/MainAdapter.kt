@@ -4,12 +4,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import camp.nextstep.edu.memo.domain.entity.Memo
 
-class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
+class MainAdapter(
+    val onClick: (position: Int) -> Unit
+) : RecyclerView.Adapter<MainViewHolder>() {
 
     private val items = mutableListOf<Memo>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder =
-        MainViewHolder(parent = parent)
+        MainViewHolder(parent = parent).apply {
+            itemView.setOnClickListener {
+                onClick(adapterPosition)
+            }
+        }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.bind(items[position])

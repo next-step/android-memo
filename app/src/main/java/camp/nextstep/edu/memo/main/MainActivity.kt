@@ -5,21 +5,27 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import camp.nextstep.edu.memo.write.MemoWriteActivity
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
 import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
+import camp.nextstep.edu.memo.update.MemoUpdateActivity
+import camp.nextstep.edu.memo.write.MemoWriteActivity
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel>()
-    private val mainAdapter = MainAdapter()
+    private val mainAdapter by lazy {
+        MainAdapter { position ->
+            startActivity(
+                MemoUpdateActivity.intent(context = this).apply {
+                    putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
+                }
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
