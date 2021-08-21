@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
+import camp.nextstep.edu.memo.delete.MemoDeleteActivity
 import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
 import camp.nextstep.edu.memo.update.MemoUpdateActivity
 import camp.nextstep.edu.memo.write.MemoWriteActivity
@@ -18,20 +19,36 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel>()
     private val mainAdapter by lazy {
-        MainAdapter { position ->
-            activityResultRegistry
-                .register(
-                    KEY_MEMO_UPDATE,
-                    ActivityResultContracts.StartActivityForResult()
-                ) {
-                    if (it.resultCode != RESULT_OK) return@register
-                    showContent()
-                    refreshItem(position)
-                }
-                .launch(MemoUpdateActivity.intent(context = this).apply {
-                    putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
-                })
-        }
+        MainAdapter(
+            onUpdate = { position ->
+                activityResultRegistry
+                    .register(
+                        KEY_MEMO_UPDATE,
+                        ActivityResultContracts.StartActivityForResult()
+                    ) {
+                        if (it.resultCode != RESULT_OK) return@register
+                        showContent()
+                        refreshItem(position)
+                    }
+                    .launch(MemoUpdateActivity.intent(context = this).apply {
+                        putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
+                    })
+            },
+            onDelete = { position ->
+                activityResultRegistry
+                    .register(
+                        KEY_MEMO_DELETE,
+                        ActivityResultContracts.StartActivityForResult()
+                    ) {
+                        if (it.resultCode != RESULT_OK) return@register
+                        showContent()
+                        refreshItem(position)
+                    }
+                    .launch(MemoDeleteActivity.intent(context = this).apply {
+                        putExtra(MemoDeleteActivity.BUNDLE_KEY_ITEM_POSITION, position)
+                    })
+            }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,5 +104,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val KEY_MEMO_WRITE = "key_memo_write"
         private const val KEY_MEMO_UPDATE = "key_memo_update"
+        private const val KEY_MEMO_DELETE = "key_memo_delete"
     }
 }

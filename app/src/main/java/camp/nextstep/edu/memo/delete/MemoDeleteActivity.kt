@@ -1,5 +1,7 @@
 package camp.nextstep.edu.memo.delete
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -19,5 +21,11 @@ class MemoDeleteActivity : AppCompatActivity() {
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_memo_delete)
         binding.lifecycleOwner = this
+    }
+
+    companion object {
+        const val BUNDLE_KEY_ITEM_POSITION = "bundle_key_item_position"
+
+        fun intent(context: Context) = Intent(context, MemoDeleteActivity::class.java)
     }
 }
