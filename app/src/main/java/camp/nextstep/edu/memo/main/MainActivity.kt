@@ -19,11 +19,18 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private val mainAdapter by lazy {
         MainAdapter { position ->
-            startActivity(
-                MemoUpdateActivity.intent(context = this).apply {
-                    putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
+            activityResultRegistry
+                .register(
+                    KEY_MEMO_UPDATE,
+                    ActivityResultContracts.StartActivityForResult()
+                ) {
+                    if (it.resultCode != RESULT_OK) return@register
+                    showContent()
+                    refreshItem(position)
                 }
-            )
+                .launch(MemoUpdateActivity.intent(context = this).apply {
+                    putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
+                })
         }
     }
 
@@ -73,7 +80,12 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
     }
 
+    private fun refreshItem(position: Int) {
+        mainAdapter.notifyItemChanged(position)
+    }
+
     companion object {
         private const val KEY_MEMO_WRITE = "key_memo_write"
+        private const val KEY_MEMO_UPDATE = "key_memo_update"
     }
 }
