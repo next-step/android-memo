@@ -41,4 +41,18 @@ internal class MemoServiceTest {
 
         assertThat(actual).containsAll(memoList)
     }
+
+    @Test
+    fun `특정 메모를 수정합니다`() {
+        `작성한 메모를 저장합니다`()
+
+        val updatedMemo = Memo("메모 수정")
+        memoService.update(position = 0, memo = updatedMemo)
+
+        val actual = memoService
+            .fetch()
+            .first()
+
+        assertThat(actual).isEqualTo(updatedMemo)
+    }
 }

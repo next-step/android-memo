@@ -12,6 +12,10 @@ class MemoService {
 
     fun fetch(): List<Memo> = _memoList.toList()
 
+    fun update(position: Int, memo: Memo) {
+        _memoList[position] = memo
+    }
+
     companion object {
         @Volatile
         private var instance: MemoService? = null
