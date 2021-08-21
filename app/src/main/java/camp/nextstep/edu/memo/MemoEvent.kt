@@ -8,6 +8,8 @@ sealed class MemoEvent {
 
     object Update : MemoEvent()
 
+    object Delete : MemoEvent()
+
     object Cancel : MemoEvent()
 
 }

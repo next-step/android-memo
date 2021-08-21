@@ -38,6 +38,7 @@ class MemoUpdateActivity : AppCompatActivity() {
                         finish()
                     }
                     MemoEvent.None,
+                    MemoEvent.Delete,
                     MemoEvent.Write -> Unit
                 }
             }
