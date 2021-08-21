@@ -16,6 +16,10 @@ class MemoService {
         _memoList[position] = memo
     }
 
+    fun delete(position: Int) {
+        _memoList.removeAt(position)
+    }
+
     companion object {
         @Volatile
         private var instance: MemoService? = null

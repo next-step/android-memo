@@ -55,4 +55,15 @@ internal class MemoServiceTest {
 
         assertThat(actual).isEqualTo(updatedMemo)
     }
+
+    @Test
+    fun `특정 메모를 삭제합니다`() {
+        `작성한 메모를 저장합니다`()
+
+        memoService.delete(position = 0)
+
+        val actual = memoService.fetch()
+
+        assertThat(actual).isEqualTo(emptyList<Memo>())
+    }
 }
