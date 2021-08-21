@@ -13,19 +13,19 @@ class MemoWriteViewModel(
     private val memoRepository: MemoRepository = MemoRepositoryImpl.getInstance()
 ) : ViewModel() {
 
-    private val _isSavedMemo = MutableStateFlow<MemoEvent>(MemoEvent.None)
-    val isSavedMemo: StateFlow<MemoEvent> get() = _isSavedMemo.asStateFlow()
+    private val _memoEvent = MutableStateFlow<MemoEvent>(MemoEvent.None)
+    val memoEvent: StateFlow<MemoEvent> get() = _memoEvent.asStateFlow()
 
     fun saveMemo(memo: String) {
         if (memo.isEmpty()) {
-            _isSavedMemo.value = MemoEvent.Cancel
+            _memoEvent.value = MemoEvent.Cancel
             return
         }
         memoRepository.save(memo = Memo(memo))
-        _isSavedMemo.value = MemoEvent.Write
+        _memoEvent.value = MemoEvent.Write
     }
 
     fun cancel() {
-        _isSavedMemo.value = MemoEvent.Cancel
+        _memoEvent.value = MemoEvent.Cancel
     }
 }

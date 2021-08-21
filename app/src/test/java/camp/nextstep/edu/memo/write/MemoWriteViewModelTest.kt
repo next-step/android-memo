@@ -36,14 +36,14 @@ internal class MemoWriteViewModelTest {
 
         viewModel.saveMemo(memo = memoValue)
 
-        assertEquals(viewModel.isSavedMemo.value, MemoEvent.Cancel)
+        assertEquals(viewModel.memoEvent.value, MemoEvent.Cancel)
     }
 
     @Test
     fun `취소 버튼을 누릅니다`() {
         viewModel.cancel()
 
-        assertEquals(viewModel.isSavedMemo.value, MemoEvent.Cancel)
+        assertEquals(viewModel.memoEvent.value, MemoEvent.Cancel)
     }
 
 }
