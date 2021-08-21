@@ -9,4 +9,6 @@ interface MemoRepository {
     fun fetch(): List<Memo>
 
     fun update(position: Int, memo: Memo)
+
+    fun delete(position: Int)
 }

@@ -17,6 +17,10 @@ class MemoRepositoryImpl(
         service.update(position = position, memo = memo)
     }
 
+    override fun delete(position: Int) {
+        service.delete(position)
+    }
+
     companion object {
         @Volatile
         private var instance: MemoRepository? = null

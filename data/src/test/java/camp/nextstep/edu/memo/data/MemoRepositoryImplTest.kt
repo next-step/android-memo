@@ -57,4 +57,12 @@ internal class MemoRepositoryImplTest {
         }
     }
 
+    @Test
+    fun `특정 메모를 삭제합니다`() {
+        repository.delete(position = 0)
+
+        verify {
+            memoService.delete(position = 0)
+        }
+    }
 }
