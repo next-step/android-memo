@@ -6,6 +6,8 @@ sealed class MemoEvent {
 
     object Write : MemoEvent()
 
+    object Update : MemoEvent()
+
     object Cancel : MemoEvent()
 
 }
