@@ -13,6 +13,10 @@ class MemoRepositoryImpl(
 
     override fun fetch(): List<Memo> = service.fetch()
 
+    override fun update(position: Int, memo: Memo) {
+        service.update(position = position, memo = memo)
+    }
+
     companion object {
         @Volatile
         private var instance: MemoRepository? = null
