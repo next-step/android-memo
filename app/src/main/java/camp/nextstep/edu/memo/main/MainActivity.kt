@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         if (it.resultCode != RESULT_OK) return@register
                         showContent()
-                        refreshItem(position)
+                        updateItem(position)
                     }
                     .launch(MemoUpdateActivity.intent(context = this).apply {
                         putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         if (it.resultCode != RESULT_OK) return@register
                         showContent()
-                        refreshItem(position)
+                        deleteItem(position)
                     }
                     .launch(MemoDeleteActivity.intent(context = this).apply {
                         putExtra(MemoDeleteActivity.BUNDLE_KEY_ITEM_POSITION, position)
@@ -97,8 +97,12 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
     }
 
-    private fun refreshItem(position: Int) {
+    private fun updateItem(position: Int) {
         mainAdapter.notifyItemChanged(position)
+    }
+
+    private fun deleteItem(position: Int) {
+        mainAdapter.notifyItemRemoved(position)
     }
 
     companion object {
