@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 fun launchAndRepeatOnLifecycle(
     scope: LifecycleCoroutineScope,
     owner: LifecycleOwner,
-    state: Lifecycle.State = Lifecycle.State.STARTED,
+    state: Lifecycle.State = Lifecycle.State.CREATED,
     action: suspend CoroutineScope.() -> Unit
 ) {
     scope.launch {
