@@ -75,18 +75,16 @@ class MainActivity : AppCompatActivity() {
                 mainAdapter.replaceItems(it)
             }
         }
-        launchAndRepeatOnLifecycle(scope = lifecycleScope, owner = this) {
-            viewModel.memoEvent.collect {
-                when (it) {
-                    is MemoEvent.Delete -> {
-                        showContent()
-                        deleteItem(it.position)
-                    }
-                    MemoEvent.Cancel,
-                    MemoEvent.None,
-                    MemoEvent.Update,
-                    MemoEvent.Write -> Unit
+        viewModel.memoEvent.observe(this) {
+            when (it) {
+                is MemoEvent.Delete -> {
+                    showContent()
+                    deleteItem(it.position)
                 }
+                MemoEvent.Cancel,
+                MemoEvent.None,
+                MemoEvent.Update,
+                MemoEvent.Write -> Unit
             }
         }
     }

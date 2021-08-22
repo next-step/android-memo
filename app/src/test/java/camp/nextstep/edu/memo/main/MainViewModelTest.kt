@@ -1,5 +1,6 @@
 package camp.nextstep.edu.memo.main
 
+import camp.nextstep.edu.memo.InstantExecutorExtension
 import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
@@ -10,7 +11,9 @@ import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
+@ExtendWith(value = [InstantExecutorExtension::class])
 internal class MainViewModelTest {
 
     private val memoRepository: MemoRepository = mockk(relaxed = true)
