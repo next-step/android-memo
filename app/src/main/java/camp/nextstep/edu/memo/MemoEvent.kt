@@ -8,7 +8,7 @@ sealed class MemoEvent {
 
     object Update : MemoEvent()
 
-    object Delete : MemoEvent()
+    data class Delete(val position: Int) : MemoEvent()
 
     object Cancel : MemoEvent()
 

@@ -6,9 +6,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
-import camp.nextstep.edu.memo.delete.MemoDeleteActivity
+import camp.nextstep.edu.memo.delete.MemoDeleteDialogFragment
 import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
 import camp.nextstep.edu.memo.update.MemoUpdateActivity
 import camp.nextstep.edu.memo.write.MemoWriteActivity
@@ -35,18 +36,11 @@ class MainActivity : AppCompatActivity() {
                     })
             },
             onDelete = { position ->
-                activityResultRegistry
-                    .register(
-                        KEY_MEMO_DELETE,
-                        ActivityResultContracts.StartActivityForResult()
-                    ) {
-                        if (it.resultCode != RESULT_OK) return@register
-                        showContent()
-                        deleteItem(position)
+                MemoDeleteDialogFragment
+                    .newInstance(position)
+                    .apply {
+                        show(supportFragmentManager, MemoDeleteDialogFragment.TAG)
                     }
-                    .launch(MemoDeleteActivity.intent(context = this).apply {
-                        putExtra(MemoDeleteActivity.BUNDLE_KEY_ITEM_POSITION, position)
-                    })
             }
         )
     }
@@ -81,6 +75,20 @@ class MainActivity : AppCompatActivity() {
                 mainAdapter.replaceItems(it)
             }
         }
+        launchAndRepeatOnLifecycle(scope = lifecycleScope, owner = this) {
+            viewModel.memoEvent.collect {
+                when (it) {
+                    is MemoEvent.Delete -> {
+                        showContent()
+                        deleteItem(it.position)
+                    }
+                    MemoEvent.Cancel,
+                    MemoEvent.None,
+                    MemoEvent.Update,
+                    MemoEvent.Write -> Unit
+                }
+            }
+        }
     }
 
     private fun showContent() {
@@ -108,6 +116,5 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val KEY_MEMO_WRITE = "key_memo_write"
         private const val KEY_MEMO_UPDATE = "key_memo_update"
-        private const val KEY_MEMO_DELETE = "key_memo_delete"
     }
 }
