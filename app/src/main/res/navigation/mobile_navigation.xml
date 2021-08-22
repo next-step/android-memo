@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_memo_list">
+
+    <fragment
+        android:id="@+id/navigation_memo_list"
+        android:name="camp.nextstep.edu.memo.list.MemoListFragment"
+        android:label="@string/memo_list"
+        tools:layout="@layout/fragment_memo_list" >
+        <action
+            android:id="@+id/action_navigation_memo_list_to_navigation_memo_add"
+            app:destination="@id/navigation_memo_add" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_memo_add"
+        android:name="camp.nextstep.edu.memo.add.AddMemoFragment"
+        android:label="@string/memo_add"
+        tools:layout="@layout/fragment_memo_add" >
+        <action
+            android:id="@+id/action_navigation_memo_add_to_navigation_memo_list"
+            app:destination="@id/navigation_memo_list" />
+    </fragment>
+
+</navigation>
