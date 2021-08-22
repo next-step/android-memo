@@ -2,26 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="position"
-            type="Integer" />
-
-        <variable
-            name="viewModel"
-            type="camp.nextstep.edu.memo.delete.MemoDeleteViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/et_memo_delete"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:inputType="text"
+        <TextView
+            android:id="@+id/tv_memo_delete_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/delete_selected_memo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,13 +25,12 @@
             app:layout_constraintEnd_toStartOf="@id/btn_memo_delete_confirm"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_memo_delete" />
+            app:layout_constraintTop_toBottomOf="@id/tv_memo_delete_guide" />
 
         <Button
             android:id="@+id/btn_memo_delete_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.delete(position)}"
             android:text="@string/delete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_memo_delete_cancel"

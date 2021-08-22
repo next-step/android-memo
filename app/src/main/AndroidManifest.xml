@@ -18,7 +18,6 @@
         </activity>
         <activity android:name=".write.MemoWriteActivity"/>
         <activity android:name=".update.MemoUpdateActivity"/>
-        <activity android:name=".delete.MemoDeleteActivity"/>
     </application>
 
 </manifest>
