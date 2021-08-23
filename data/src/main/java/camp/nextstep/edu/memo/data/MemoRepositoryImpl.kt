@@ -27,7 +27,7 @@ class MemoRepositoryImpl(
         private var instance: MemoRepository? = null
 
         fun getInstance(): MemoRepository = instance ?: synchronized(this) {
-            instance ?: MemoRepositoryImpl(service = MemoService.getInstance()).also {
+            instance ?: MemoRepositoryImpl(service = MemoServiceImpl.getInstance()).also {
                 instance = it
             }
         }

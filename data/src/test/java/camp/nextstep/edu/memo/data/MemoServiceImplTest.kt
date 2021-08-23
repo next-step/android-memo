@@ -6,13 +6,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
-internal class MemoServiceTest {
+internal class MemoServiceImplTest {
 
     private lateinit var memoService: MemoService
 
     @BeforeEach
     fun setup() {
-        memoService = MemoService()
+        memoService = MemoServiceImpl()
     }
 
     @Test
