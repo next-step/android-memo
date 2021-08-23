@@ -4,9 +4,5 @@ import camp.nextstep.edu.memo.domain.repository.MemoRepository
 
 object Injector {
 
-    @Volatile
-    private var memoRepositoryInstance: MemoRepository? = null
-
-    fun providesMemoRepository(): MemoRepository = memoRepositoryInstance
-        ?: MemoRepositoryImpl.getInstance()
+    fun providesMemoRepository(): MemoRepository = MemoRepositoryImpl.getInstance()
 }
