@@ -21,27 +21,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private val mainAdapter by lazy {
         MainAdapter(
-            onUpdate = { position ->
-                activityResultRegistry
-                    .register(
-                        KEY_MEMO_UPDATE,
-                        ActivityResultContracts.StartActivityForResult()
-                    ) {
-                        if (it.resultCode != RESULT_OK) return@register
-                        showContent()
-                        updateItem(position)
-                    }
-                    .launch(MemoUpdateActivity.intent(context = this).apply {
-                        putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
-                    })
-            },
-            onDelete = { position ->
-                MemoDeleteDialogFragment
-                    .newInstance(position)
-                    .apply {
-                        show(supportFragmentManager, MemoDeleteDialogFragment.TAG)
-                    }
-            }
+            onUpdate = ::onUpdate,
+            onDelete = ::onDelete
         )
     }
 
@@ -109,6 +90,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteItem(position: Int) {
         mainAdapter.notifyItemRemoved(position)
+    }
+
+    private fun onUpdate(position: Int) {
+        activityResultRegistry
+            .register(
+                KEY_MEMO_UPDATE,
+                ActivityResultContracts.StartActivityForResult()
+            ) {
+                if (it.resultCode != RESULT_OK) return@register
+                showContent()
+                updateItem(position)
+            }
+            .launch(MemoUpdateActivity.intent(context = this).apply {
+                putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
+            })
+    }
+
+    private fun onDelete(position: Int) {
+        MemoDeleteDialogFragment
+            .newInstance(position)
+            .apply {
+                show(supportFragmentManager, MemoDeleteDialogFragment.TAG)
+            }
     }
 
     companion object {
