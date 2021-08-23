@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 MemoEvent.None,
                 MemoEvent.Update,
                 MemoEvent.Write -> Unit
-            }
+            }.javaClass
         }
     }
 

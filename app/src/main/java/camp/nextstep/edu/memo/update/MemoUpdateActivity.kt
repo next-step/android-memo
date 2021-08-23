@@ -41,7 +41,7 @@ class MemoUpdateActivity : AppCompatActivity() {
                     MemoEvent.None,
                     is MemoEvent.Delete,
                     MemoEvent.Write -> Unit
-                }
+                }.javaClass
             }
         }
     }

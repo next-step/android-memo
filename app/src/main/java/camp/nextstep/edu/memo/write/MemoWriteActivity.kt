@@ -40,7 +40,7 @@ class MemoWriteActivity : AppCompatActivity() {
                     MemoEvent.Update,
                     is MemoEvent.Delete,
                     MemoEvent.None -> Unit
-                }
+                }.javaClass
             }
         }
     }
