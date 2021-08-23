@@ -32,9 +32,9 @@ internal class MemoServiceImpl : MemoService {
 
     companion object {
         @Volatile
-        private var instance: MemoServiceImpl? = null
+        private var instance: MemoService? = null
 
-        fun getInstance(): MemoServiceImpl = instance ?: synchronized(this) {
+        fun getInstance(): MemoService = instance ?: synchronized(this) {
             instance ?: MemoServiceImpl().also {
                 instance = it
             }

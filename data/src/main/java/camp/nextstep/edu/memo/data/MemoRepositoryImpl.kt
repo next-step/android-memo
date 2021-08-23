@@ -4,7 +4,7 @@ import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import camp.nextstep.edu.memo.domain.entity.Memo
 import java.util.UUID
 
-class MemoRepositoryImpl(
+internal class MemoRepositoryImpl(
     private val service: MemoService
 ) : MemoRepository {
 

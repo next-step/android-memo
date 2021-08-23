@@ -3,7 +3,7 @@ package camp.nextstep.edu.memo.data
 import camp.nextstep.edu.memo.domain.entity.Memo
 import java.util.UUID
 
-interface MemoService {
+internal interface MemoService {
 
     fun save(memo: Memo)
 

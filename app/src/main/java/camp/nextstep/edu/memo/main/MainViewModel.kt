@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.Event
-import camp.nextstep.edu.memo.data.MemoRepositoryImpl
+import camp.nextstep.edu.memo.data.Injector
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import java.util.UUID
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class MainViewModel(
-    private val memoRepository: MemoRepository = MemoRepositoryImpl.getInstance()
+    private val memoRepository: MemoRepository = Injector.providesMemoRepository()
 ) : ViewModel() {
 
     private val _memoList = MutableStateFlow<List<Memo>>(emptyList())
