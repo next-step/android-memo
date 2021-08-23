@@ -1,7 +1,7 @@
 package camp.nextstep.edu.memo.data
 
-import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import camp.nextstep.edu.memo.domain.entity.Memo
+import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -46,4 +46,23 @@ internal class MemoRepositoryImplTest {
         Assertions.assertThat(actual).isEqualTo(memoList)
     }
 
+    @Test
+    fun `특정 메모를 수정합니다`() {
+        val updatedMemo = Memo("메모 수정")
+
+        repository.update(position = 0, memo = updatedMemo)
+
+        verify {
+            memoService.update(position = 0, memo = updatedMemo)
+        }
+    }
+
+    @Test
+    fun `특정 메모를 삭제합니다`() {
+        repository.delete(position = 0)
+
+        verify {
+            memoService.delete(position = 0)
+        }
+    }
 }

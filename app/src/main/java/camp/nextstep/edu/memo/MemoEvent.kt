@@ -6,6 +6,10 @@ sealed class MemoEvent {
 
     object Write : MemoEvent()
 
+    object Update : MemoEvent()
+
+    data class Delete(val position: Int) : MemoEvent()
+
     object Cancel : MemoEvent()
 
 }

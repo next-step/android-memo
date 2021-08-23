@@ -5,21 +5,45 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import camp.nextstep.edu.memo.write.MemoWriteActivity
+import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
+import camp.nextstep.edu.memo.delete.MemoDeleteDialogFragment
 import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
+import camp.nextstep.edu.memo.update.MemoUpdateActivity
+import camp.nextstep.edu.memo.write.MemoWriteActivity
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel>()
-    private val mainAdapter = MainAdapter()
+    private val mainAdapter by lazy {
+        MainAdapter(
+            onUpdate = { position ->
+                activityResultRegistry
+                    .register(
+                        KEY_MEMO_UPDATE,
+                        ActivityResultContracts.StartActivityForResult()
+                    ) {
+                        if (it.resultCode != RESULT_OK) return@register
+                        showContent()
+                        updateItem(position)
+                    }
+                    .launch(MemoUpdateActivity.intent(context = this).apply {
+                        putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
+                    })
+            },
+            onDelete = { position ->
+                MemoDeleteDialogFragment
+                    .newInstance(position)
+                    .apply {
+                        show(supportFragmentManager, MemoDeleteDialogFragment.TAG)
+                    }
+            }
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +75,18 @@ class MainActivity : AppCompatActivity() {
                 mainAdapter.replaceItems(it)
             }
         }
+        viewModel.memoEvent.observe(this) {
+            when (it) {
+                is MemoEvent.Delete -> {
+                    showContent()
+                    deleteItem(it.position)
+                }
+                MemoEvent.Cancel,
+                MemoEvent.None,
+                MemoEvent.Update,
+                MemoEvent.Write -> Unit
+            }
+        }
     }
 
     private fun showContent() {
@@ -67,7 +103,16 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
     }
 
+    private fun updateItem(position: Int) {
+        mainAdapter.notifyItemChanged(position)
+    }
+
+    private fun deleteItem(position: Int) {
+        mainAdapter.notifyItemRemoved(position)
+    }
+
     companion object {
         private const val KEY_MEMO_WRITE = "key_memo_write"
+        private const val KEY_MEMO_UPDATE = "key_memo_update"
     }
 }

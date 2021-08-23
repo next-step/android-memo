@@ -12,6 +12,14 @@ class MemoService {
 
     fun fetch(): List<Memo> = _memoList.toList()
 
+    fun update(position: Int, memo: Memo) {
+        _memoList[position] = memo
+    }
+
+    fun delete(position: Int) {
+        _memoList.removeAt(position)
+    }
+
     companion object {
         @Volatile
         private var instance: MemoService? = null
