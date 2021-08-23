@@ -59,7 +59,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         viewModel.memoEvent.observe(this) {
-            when (it) {
+            val event = it.getContentIfNotHandled() ?: return@observe
+            when (event) {
                 is MemoEvent.Delete -> {
                     showContent()
                 }
