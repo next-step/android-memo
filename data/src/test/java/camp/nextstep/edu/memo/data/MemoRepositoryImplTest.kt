@@ -5,6 +5,7 @@ import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import java.util.UUID
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,7 +22,7 @@ internal class MemoRepositoryImplTest {
 
     @Test
     fun `작성한 메모를 저장합니다`() {
-        val memo = Memo("메모 작성")
+        val memo = Memo(uuid = ID, value = "메모 작성")
 
         repository.save(memo)
 
@@ -33,8 +34,8 @@ internal class MemoRepositoryImplTest {
     @Test
     fun `작성된 메모들을 불러옵니다`() {
         val memoList = listOf(
-            Memo("메모1"),
-            Memo("메모2")
+            Memo(value = "메모1"),
+            Memo(value = "메모2")
         )
 
         every {
@@ -48,21 +49,25 @@ internal class MemoRepositoryImplTest {
 
     @Test
     fun `특정 메모를 수정합니다`() {
-        val updatedMemo = Memo("메모 수정")
+        val updatedMemo = Memo(uuid = ID, value = "메모 수정")
 
-        repository.update(position = 0, memo = updatedMemo)
+        repository.update(memo = updatedMemo)
 
         verify {
-            memoService.update(position = 0, memo = updatedMemo)
+            memoService.update(memo = updatedMemo)
         }
     }
 
     @Test
     fun `특정 메모를 삭제합니다`() {
-        repository.delete(position = 0)
+        repository.delete(uuid = ID)
 
         verify {
-            memoService.delete(position = 0)
+            memoService.delete(uuid = ID)
         }
+    }
+
+    companion object {
+        private val ID = UUID.randomUUID()
     }
 }

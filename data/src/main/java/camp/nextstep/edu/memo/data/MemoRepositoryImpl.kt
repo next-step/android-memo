@@ -2,6 +2,7 @@ package camp.nextstep.edu.memo.data
 
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import camp.nextstep.edu.memo.domain.entity.Memo
+import java.util.UUID
 
 class MemoRepositoryImpl(
     private val service: MemoService
@@ -13,12 +14,12 @@ class MemoRepositoryImpl(
 
     override fun fetch(): List<Memo> = service.fetch()
 
-    override fun update(position: Int, memo: Memo) {
-        service.update(position = position, memo = memo)
+    override fun update(memo: Memo) {
+        service.update(memo = memo)
     }
 
-    override fun delete(position: Int) {
-        service.delete(position)
+    override fun delete(uuid: UUID) {
+        service.delete(uuid)
     }
 
     companion object {

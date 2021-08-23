@@ -1,3 +1,8 @@
 package camp.nextstep.edu.memo.domain.entity
 
-data class Memo(val value: String)
+import java.util.UUID
+
+data class Memo(
+    val uuid: UUID = UUID.randomUUID(),
+    val value: String
+)

@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.DialogMemoDeleteBinding
 import camp.nextstep.edu.memo.main.MainViewModel
+import java.util.UUID
 
 class MemoDeleteDialogFragment : DialogFragment() {
 
@@ -42,17 +43,17 @@ class MemoDeleteDialogFragment : DialogFragment() {
         }
         btnMemoDeleteConfirm.setOnClickListener {
             dismiss()
-            (arguments?.get(BUNDLE_KEY_ITEM_POSITION) as? Int)
+            (arguments?.get(BUNDLE_KEY_ITEM_ID) as? UUID)
                 ?.let(this@MemoDeleteDialogFragment.viewModel::delete)
         }
     }
 
     companion object {
-        private const val BUNDLE_KEY_ITEM_POSITION = "bundle_key_item_position"
+        private const val BUNDLE_KEY_ITEM_ID = "bundle_key_item_id"
         val TAG = MemoDeleteDialogFragment::class.java.simpleName.toString()
 
-        fun newInstance(position: Int) = MemoDeleteDialogFragment().apply {
-            arguments = bundleOf(BUNDLE_KEY_ITEM_POSITION to position)
+        fun newInstance(uuid: UUID) = MemoDeleteDialogFragment().apply {
+            arguments = bundleOf(BUNDLE_KEY_ITEM_ID to uuid)
         }
 
     }

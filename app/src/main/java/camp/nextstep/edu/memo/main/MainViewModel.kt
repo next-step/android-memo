@@ -7,6 +7,7 @@ import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.data.MemoRepositoryImpl
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
+import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +26,8 @@ class MainViewModel(
         _memoList.value = memoRepository.fetch()
     }
 
-    fun delete(position: Int) {
-        memoRepository.delete(position)
-        _memoEvent.value = MemoEvent.Delete(position)
+    fun delete(uuid: UUID) {
+        memoRepository.delete(uuid)
+        _memoEvent.value = MemoEvent.Delete(uuid)
     }
 }

@@ -1,6 +1,7 @@
 package camp.nextstep.edu.memo.domain.repository
 
 import camp.nextstep.edu.memo.domain.entity.Memo
+import java.util.UUID
 
 interface MemoRepository {
 
@@ -8,7 +9,7 @@ interface MemoRepository {
 
     fun fetch(): List<Memo>
 
-    fun update(position: Int, memo: Memo)
+    fun update(memo: Memo)
 
-    fun delete(position: Int)
+    fun delete(uuid: UUID)
 }

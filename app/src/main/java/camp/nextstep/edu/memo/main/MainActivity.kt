@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import camp.nextstep.edu.memo.MemoEvent
@@ -13,6 +14,7 @@ import camp.nextstep.edu.memo.delete.MemoDeleteDialogFragment
 import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
 import camp.nextstep.edu.memo.update.MemoUpdateActivity
 import camp.nextstep.edu.memo.write.MemoWriteActivity
+import java.util.UUID
 import kotlinx.coroutines.flow.collect
 
 class MainActivity : AppCompatActivity() {
@@ -53,14 +55,13 @@ class MainActivity : AppCompatActivity() {
     private fun setupObserver() {
         launchAndRepeatOnLifecycle(scope = lifecycleScope, owner = this) {
             viewModel.memoList.collect {
-                mainAdapter.replaceItems(it)
+                mainAdapter.submitList(it)
             }
         }
         viewModel.memoEvent.observe(this) {
             when (it) {
                 is MemoEvent.Delete -> {
                     showContent()
-                    deleteItem(it.position)
                 }
                 MemoEvent.Cancel,
                 MemoEvent.None,
@@ -84,15 +85,7 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
     }
 
-    private fun updateItem(position: Int) {
-        mainAdapter.notifyItemChanged(position)
-    }
-
-    private fun deleteItem(position: Int) {
-        mainAdapter.notifyItemRemoved(position)
-    }
-
-    private fun onUpdate(position: Int) {
+    private fun onUpdate(uuid: UUID) {
         activityResultRegistry
             .register(
                 KEY_MEMO_UPDATE,
@@ -100,16 +93,15 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (it.resultCode != RESULT_OK) return@register
                 showContent()
-                updateItem(position)
             }
             .launch(MemoUpdateActivity.intent(context = this).apply {
-                putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
+                putExtras(bundleOf(MemoUpdateActivity.BUNDLE_KEY_ITEM_ID to uuid))
             })
     }
 
-    private fun onDelete(position: Int) {
+    private fun onDelete(uuid: UUID) {
         MemoDeleteDialogFragment
-            .newInstance(position)
+            .newInstance(uuid)
             .apply {
                 show(supportFragmentManager, MemoDeleteDialogFragment.TAG)
             }

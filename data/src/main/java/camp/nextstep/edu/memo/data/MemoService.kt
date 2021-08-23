@@ -1,23 +1,33 @@
 package camp.nextstep.edu.memo.data
 
 import camp.nextstep.edu.memo.domain.entity.Memo
+import java.util.UUID
 
 class MemoService {
 
-    private val _memoList = mutableListOf<Memo>()
+    private val memoList = mutableListOf<Memo>()
 
     fun save(memo: Memo) {
-        _memoList.add(memo)
+        memoList.add(memo)
     }
 
-    fun fetch(): List<Memo> = _memoList.toList()
+    fun fetch(): List<Memo> = memoList.toList()
 
-    fun update(position: Int, memo: Memo) {
-        _memoList[position] = memo
+    fun update(memo: Memo) {
+        memoList.forEachIndexed { index, item ->
+            if (memo.uuid != item.uuid) return@forEachIndexed
+            memoList[index] = memo
+        }
     }
 
-    fun delete(position: Int) {
-        _memoList.removeAt(position)
+    fun delete(uuid: UUID) {
+        var removedIndex = -1
+        memoList.forEachIndexed { index, item ->
+            if (item.uuid != uuid) return@forEachIndexed
+            removedIndex = index
+        }
+        if (removedIndex == -1) return
+        memoList.removeAt(removedIndex)
     }
 
     companion object {

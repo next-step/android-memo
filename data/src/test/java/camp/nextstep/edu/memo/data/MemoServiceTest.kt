@@ -1,11 +1,10 @@
 package camp.nextstep.edu.memo.data
 
 import camp.nextstep.edu.memo.domain.entity.Memo
-import io.mockk.every
-import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.UUID
 
 internal class MemoServiceTest {
 
@@ -18,7 +17,7 @@ internal class MemoServiceTest {
 
     @Test
     fun `작성한 메모를 저장합니다`() {
-        val memo = Memo("메모 작성")
+        val memo = Memo(uuid = ID, value = "메모 작성")
 
         memoService.save(memo)
 
@@ -32,8 +31,8 @@ internal class MemoServiceTest {
     @Test
     fun `작성된 메모들을 불러옵니다`() {
         val memoList = listOf(
-            Memo("메모1"),
-            Memo("메모2")
+            Memo(value = "메모1"),
+            Memo(value = "메모2")
         )
         memoList.forEach(memoService::save)
 
@@ -46,8 +45,8 @@ internal class MemoServiceTest {
     fun `특정 메모를 수정합니다`() {
         `작성한 메모를 저장합니다`()
 
-        val updatedMemo = Memo("메모 수정")
-        memoService.update(position = 0, memo = updatedMemo)
+        val updatedMemo = Memo(uuid = ID, value = "메모 수정")
+        memoService.update(memo = updatedMemo)
 
         val actual = memoService
             .fetch()
@@ -60,10 +59,14 @@ internal class MemoServiceTest {
     fun `특정 메모를 삭제합니다`() {
         `작성한 메모를 저장합니다`()
 
-        memoService.delete(position = 0)
+        memoService.delete(uuid = ID)
 
         val actual = memoService.fetch()
 
         assertThat(actual).isEqualTo(emptyList<Memo>())
+    }
+
+    companion object {
+        private val ID = UUID.randomUUID()
     }
 }
