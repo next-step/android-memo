@@ -1,4 +1,4 @@
-package camp.nextstep.edu.data
+package camp.nextstep.edu.data.local
 
 import camp.nextstep.edu.domain.Memo
 import com.google.common.truth.Truth.assertThat

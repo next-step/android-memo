@@ -1,9 +1,9 @@
-package camp.nextstep.edu.data
+package camp.nextstep.edu.data.local
 
 import camp.nextstep.edu.domain.Memo
 import camp.nextstep.edu.domain.MemoSource
 
-class MemoLocalSource(
+internal class MemoLocalSource(
     initialMemos: List<Memo> = emptyList()
 ) : MemoSource {
     private val memory: MutableList<Memo> = initialMemos.toMutableList()
