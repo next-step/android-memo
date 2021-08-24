@@ -3,6 +3,7 @@ package camp.nextstep.edu.data.repository
 import camp.nextstep.edu.data.local.MemoLocalSource
 import camp.nextstep.edu.domain.Memo
 import camp.nextstep.edu.domain.MemoSource
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Created By Malibin
@@ -12,13 +13,26 @@ import camp.nextstep.edu.domain.MemoSource
 class MemoRepository internal constructor(
     private val memoLocalSource: MemoSource,
 ) : MemoSource {
+    private val memoCache: MutableMap<String, Memo> = ConcurrentHashMap()
+
+    private var isCacheDirty: Boolean = true
 
     override fun save(memo: Memo) {
         memoLocalSource.save(memo)
     }
 
     override fun getAllMemos(): List<Memo> {
-        return memoLocalSource.getAllMemos()
+        if (isCacheDirty) {
+            return memoLocalSource.getAllMemos()
+                .also { refreshMemoCache(it) }
+        }
+        return memoCache.map { it.value }
+    }
+
+    private fun refreshMemoCache(memos: List<Memo>) {
+        memoCache.clear()
+        memos.forEach { memo -> memoCache[memo.id] = memo }
+        isCacheDirty = false
     }
 
     companion object {
