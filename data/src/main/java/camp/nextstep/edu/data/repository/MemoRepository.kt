@@ -18,6 +18,7 @@ class MemoRepository internal constructor(
     private var isCacheDirty: Boolean = true
 
     override fun save(memo: Memo) {
+        memoCache[memo.id] = memo
         memoLocalSource.save(memo)
     }
 
@@ -33,6 +34,11 @@ class MemoRepository internal constructor(
         memoCache.clear()
         memos.forEach { memo -> memoCache[memo.id] = memo }
         isCacheDirty = false
+    }
+
+    override fun getMemo(id: String): Memo {
+        return memoCache[id] ?: memoLocalSource.getMemo(id)
+            .also { isCacheDirty = true }
     }
 
     companion object {

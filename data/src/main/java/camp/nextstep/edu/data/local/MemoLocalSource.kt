@@ -15,4 +15,9 @@ internal class MemoLocalSource(
     override fun getAllMemos(): List<Memo> {
         return memory.toList()
     }
+
+    override fun getMemo(id: String): Memo {
+        return memory.find { it.id == id }
+            ?: throw IllegalArgumentException("cannot find memo of id : $id")
+    }
 }

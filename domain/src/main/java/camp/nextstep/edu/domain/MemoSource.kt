@@ -10,4 +10,6 @@ interface MemoSource {
     fun save(memo: Memo)
 
     fun getAllMemos(): List<Memo>
+
+    fun getMemo(id: String): Memo
 }
