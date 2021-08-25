@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="position"
-            type="Integer" />
+            name="uuid"
+            type="java.util.UUID" />
 
         <variable
             name="viewModel"
@@ -41,7 +41,7 @@
             android:id="@+id/btn_memo_update_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.update(position, etMemoUpdate.getText().toString())}"
+            android:onClick="@{() -> viewModel.update(uuid, etMemoUpdate.getText().toString())}"
             android:text="@string/modify"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_memo_update_cancel"

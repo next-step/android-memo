@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="java.util.UUID" />
+
         <variable
             name="viewModel"
             type="camp.nextstep.edu.memo.write.MemoWriteViewModel" />
@@ -38,7 +40,7 @@
             android:id="@+id/btn_memo_write_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.saveMemo(etMemoWrite.getText().toString())}"
+            android:onClick="@{() -> viewModel.saveMemo(UUID.randomUUID(), etMemoWrite.getText().toString())}"
             android:text="@string/confirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_memo_write_cancel"

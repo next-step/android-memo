@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import camp.nextstep.edu.memo.MemoEvent
@@ -13,6 +14,7 @@ import camp.nextstep.edu.memo.delete.MemoDeleteDialogFragment
 import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
 import camp.nextstep.edu.memo.update.MemoUpdateActivity
 import camp.nextstep.edu.memo.write.MemoWriteActivity
+import java.util.UUID
 import kotlinx.coroutines.flow.collect
 
 class MainActivity : AppCompatActivity() {
@@ -21,27 +23,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private val mainAdapter by lazy {
         MainAdapter(
-            onUpdate = { position ->
-                activityResultRegistry
-                    .register(
-                        KEY_MEMO_UPDATE,
-                        ActivityResultContracts.StartActivityForResult()
-                    ) {
-                        if (it.resultCode != RESULT_OK) return@register
-                        showContent()
-                        updateItem(position)
-                    }
-                    .launch(MemoUpdateActivity.intent(context = this).apply {
-                        putExtra(MemoUpdateActivity.BUNDLE_KEY_ITEM_POSITION, position)
-                    })
-            },
-            onDelete = { position ->
-                MemoDeleteDialogFragment
-                    .newInstance(position)
-                    .apply {
-                        show(supportFragmentManager, MemoDeleteDialogFragment.TAG)
-                    }
-            }
+            onUpdate = ::onUpdate,
+            onDelete = ::onDelete
         )
     }
 
@@ -72,20 +55,20 @@ class MainActivity : AppCompatActivity() {
     private fun setupObserver() {
         launchAndRepeatOnLifecycle(scope = lifecycleScope, owner = this) {
             viewModel.memoList.collect {
-                mainAdapter.replaceItems(it)
+                mainAdapter.submitList(it)
             }
         }
         viewModel.memoEvent.observe(this) {
-            when (it) {
+            val event = it.getContentIfNotHandled() ?: return@observe
+            when (event) {
                 is MemoEvent.Delete -> {
                     showContent()
-                    deleteItem(it.position)
                 }
                 MemoEvent.Cancel,
                 MemoEvent.None,
                 MemoEvent.Update,
                 MemoEvent.Write -> Unit
-            }
+            }.javaClass
         }
     }
 
@@ -103,12 +86,26 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
     }
 
-    private fun updateItem(position: Int) {
-        mainAdapter.notifyItemChanged(position)
+    private fun onUpdate(uuid: UUID) {
+        activityResultRegistry
+            .register(
+                KEY_MEMO_UPDATE,
+                ActivityResultContracts.StartActivityForResult()
+            ) {
+                if (it.resultCode != RESULT_OK) return@register
+                showContent()
+            }
+            .launch(MemoUpdateActivity.intent(context = this).apply {
+                putExtras(bundleOf(MemoUpdateActivity.BUNDLE_KEY_ITEM_ID to uuid))
+            })
     }
 
-    private fun deleteItem(position: Int) {
-        mainAdapter.notifyItemRemoved(position)
+    private fun onDelete(uuid: UUID) {
+        MemoDeleteDialogFragment
+            .newInstance(uuid)
+            .apply {
+                show(supportFragmentManager, MemoDeleteDialogFragment.TAG)
+            }
     }
 
     companion object {

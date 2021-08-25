@@ -1,5 +1,7 @@
 package camp.nextstep.edu.memo
 
+import java.util.UUID
+
 sealed class MemoEvent {
 
     object None : MemoEvent()
@@ -8,7 +10,7 @@ sealed class MemoEvent {
 
     object Update : MemoEvent()
 
-    data class Delete(val position: Int) : MemoEvent()
+    data class Delete(val uuid: UUID) : MemoEvent()
 
     object Cancel : MemoEvent()
 

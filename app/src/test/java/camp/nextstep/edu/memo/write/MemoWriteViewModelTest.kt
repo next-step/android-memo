@@ -5,6 +5,7 @@ import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import io.mockk.mockk
 import io.mockk.verify
+import java.util.UUID
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,20 +22,20 @@ internal class MemoWriteViewModelTest {
 
     @Test
     fun `작성한 메모를 저장합니다`() {
-        val memoValue = "메모1"
+        val memo = Memo(uuid = ID, value = "메모")
 
-        viewModel.saveMemo(memo = memoValue)
+        viewModel.saveMemo(uuid = ID, memo = memo.value)
 
         verify {
-            memoRepository.save(memo = Memo(memoValue))
+            memoRepository.save(memo = memo)
         }
     }
 
     @Test
     fun `빈 메모를 작성하고 저장 버튼을 누르면 메모가 저장되지 않습니다`() {
-        val memoValue = ""
+        val memo = Memo(uuid = ID, value = "")
 
-        viewModel.saveMemo(memo = memoValue)
+        viewModel.saveMemo(uuid = memo.uuid, memo = memo.value)
 
         assertEquals(viewModel.memoEvent.value, MemoEvent.Cancel)
     }
@@ -46,4 +47,7 @@ internal class MemoWriteViewModelTest {
         assertEquals(viewModel.memoEvent.value, MemoEvent.Cancel)
     }
 
+    companion object {
+        private val ID = UUID.randomUUID()
+    }
 }

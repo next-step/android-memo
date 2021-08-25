@@ -11,6 +11,7 @@ import camp.nextstep.edu.memo.MemoEvent
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ActivityMemoUpdateBinding
 import camp.nextstep.edu.memo.launchAndRepeatOnLifecycle
+import java.util.UUID
 import kotlinx.coroutines.flow.collect
 
 class MemoUpdateActivity : AppCompatActivity() {
@@ -40,7 +41,7 @@ class MemoUpdateActivity : AppCompatActivity() {
                     MemoEvent.None,
                     is MemoEvent.Delete,
                     MemoEvent.Write -> Unit
-                }
+                }.javaClass
             }
         }
     }
@@ -50,13 +51,13 @@ class MemoUpdateActivity : AppCompatActivity() {
             .setContentView<ActivityMemoUpdateBinding>(this, R.layout.activity_memo_update)
             .also {
                 it.lifecycleOwner = this
-                it.position = intent.getIntExtra(BUNDLE_KEY_ITEM_POSITION, 0)
+                it.uuid = intent.extras?.get(BUNDLE_KEY_ITEM_ID) as? UUID
                 it.viewModel = viewModel
             }
     }
 
     companion object {
-        const val BUNDLE_KEY_ITEM_POSITION = "bundle_key_item_position"
+        const val BUNDLE_KEY_ITEM_ID = "bundle_key_item_id"
 
         fun intent(context: Context) = Intent(context, MemoUpdateActivity::class.java)
     }

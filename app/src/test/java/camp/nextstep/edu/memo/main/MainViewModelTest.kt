@@ -8,6 +8,7 @@ import camp.nextstep.edu.memo.main.MainViewModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import java.util.UUID
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,8 +28,8 @@ internal class MainViewModelTest {
     @Test
     fun `작성된 메모를 불러옵니다`() {
         val memoList = listOf(
-            Memo("메모1"),
-            Memo("메모2")
+            Memo(value = "메모1"),
+            Memo(value = "메모2")
         )
 
         every {
@@ -42,11 +43,15 @@ internal class MainViewModelTest {
 
     @Test
     fun `특정 메모를 삭제합니다`() {
-        viewModel.delete(position = 0)
+        viewModel.delete(uuid = ID)
 
         verify {
-            memoRepository.delete(position = 0)
+            memoRepository.delete(uuid = ID)
         }
-        assertEquals(viewModel.memoEvent.value, MemoEvent.Delete(position = 0))
+        assertEquals(viewModel.memoEvent.value, MemoEvent.Delete(uuid = ID))
+    }
+
+    companion object {
+        private val ID = UUID.randomUUID()
     }
 }
