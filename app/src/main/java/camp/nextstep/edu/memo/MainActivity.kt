@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private val memosAdapter: MemosAdapter by lifeCycled { MemosAdapter() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -16,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private fun initView(binding: ActivityMainBinding) {
         setContentView(binding.root)
         binding.buttonCreate.setOnClickListener { deployAddMemoActivity() }
+        binding.listMemos.adapter = memosAdapter
     }
 
     private fun deployAddMemoActivity() {
