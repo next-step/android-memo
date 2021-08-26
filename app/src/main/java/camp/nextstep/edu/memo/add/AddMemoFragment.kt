@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.FragmentMemoAddBinding
 import camp.nextstep.edu.memo.util.EventObserver
+import camp.nextstep.edu.memo.util.exhaustive
 
 class AddMemoFragment : Fragment() {
     private lateinit var binding: FragmentMemoAddBinding
@@ -40,7 +41,7 @@ class AddMemoFragment : Fragment() {
         when (event) {
             MemoEvent.Cancel -> findNavController().navigateUp()
             MemoEvent.Complete -> findNavController().navigate(R.id.navigation_memo_list)
-        }
+        }.exhaustive
     }
 
     companion object {
