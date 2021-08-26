@@ -1,8 +1,8 @@
 package camp.nextstep.edu.data.repository
 
-import camp.nextstep.edu.data.local.MemoLocalSource
+import camp.nextstep.edu.data.local.MemosLocalSource
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemoSource
+import camp.nextstep.edu.domain.MemosSource
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -10,21 +10,21 @@ import java.util.concurrent.ConcurrentHashMap
  * on 8월 24, 2021
  */
 
-class MemoRepository internal constructor(
-    private val memoLocalSource: MemoSource,
-) : MemoSource {
+class MemosRepository internal constructor(
+    private val memosLocalSource: MemosSource,
+) : MemosSource {
     private val memoCache: MutableMap<String, Memo> = ConcurrentHashMap()
 
     private var isCacheDirty: Boolean = true
 
     override fun save(memo: Memo) {
         memoCache[memo.id] = memo
-        memoLocalSource.save(memo)
+        memosLocalSource.save(memo)
     }
 
     override fun getAllMemos(): List<Memo> {
         if (isCacheDirty) {
-            return memoLocalSource.getAllMemos()
+            return memosLocalSource.getAllMemos()
                 .also { refreshMemoCache(it) }
         }
         return memoCache.map { it.value }
@@ -37,16 +37,16 @@ class MemoRepository internal constructor(
     }
 
     override fun getMemo(id: String): Memo {
-        return memoCache[id] ?: memoLocalSource.getMemo(id)
+        return memoCache[id] ?: memosLocalSource.getMemo(id)
             .also { memoCache[id] = it }
             .also { isCacheDirty = true }
     }
 
     companion object {
-        private var instance: MemoRepository? = null
+        private var instance: MemosRepository? = null
 
-        fun getInstance(): MemoSource = synchronized(this) {
-            instance ?: MemoRepository(MemoLocalSource())
+        fun getInstance(): MemosSource = synchronized(this) {
+            instance ?: MemosRepository(MemosLocalSource())
                 .also { this.instance = it }
         }
     }

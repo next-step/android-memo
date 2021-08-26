@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidMemo">
         <activity
-            android:name=".EditMemoActivity"
+            android:name=".edit.EditMemoActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

@@ -11,12 +11,12 @@ import org.junit.jupiter.api.assertThrows
  * on 8월 23, 2021
  */
 
-class MemoLocalSourceTest {
+class MemosLocalSourceTest {
 
     @Test
     fun `메모를 저장하고 꺼내올 수 있다`() {
         // given
-        val memoLocalSource = MemoLocalSource()
+        val memoLocalSource = MemosLocalSource()
         val memo = Memo(
             title = "title",
             content = "content",
@@ -37,7 +37,7 @@ class MemoLocalSourceTest {
     @Test
     fun `특정 id의 메모를 불러올 수 있다`() {
         // given
-        val memoLocalSource = MemoLocalSource()
+        val memoLocalSource = MemosLocalSource()
         val memo = Memo(
             title = "title",
             content = "content",
@@ -55,7 +55,7 @@ class MemoLocalSourceTest {
     @Test
     fun `저장되어 있지 않은 메모 id로는 메모를 가져올 수 없다`() {
         // given
-        val memoLocalSource = MemoLocalSource()
+        val memoLocalSource = MemosLocalSource()
 
         // when
         val exception = assertThrows<IllegalArgumentException> { memoLocalSource.getMemo("1") }

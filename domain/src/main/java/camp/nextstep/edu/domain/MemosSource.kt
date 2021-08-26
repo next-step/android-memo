@@ -5,7 +5,7 @@ package camp.nextstep.edu.domain
  * on 8월 24, 2021
  */
 
-interface MemoSource {
+interface MemosSource {
 
     fun save(memo: Memo)
 

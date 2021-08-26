@@ -1,11 +1,11 @@
 package camp.nextstep.edu.data.local
 
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemoSource
+import camp.nextstep.edu.domain.MemosSource
 
-internal class MemoLocalSource(
+internal class MemosLocalSource(
     initialMemos: List<Memo> = emptyList()
-) : MemoSource {
+) : MemosSource {
     private val memory: MutableList<Memo> = initialMemos.toMutableList()
 
     override fun save(memo: Memo) {

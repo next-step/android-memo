@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
+import camp.nextstep.edu.memo.edit.EditMemoActivity
 
 class MainActivity : AppCompatActivity() {
 

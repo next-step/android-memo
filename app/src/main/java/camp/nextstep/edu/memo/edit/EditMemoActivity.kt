@@ -1,4 +1,4 @@
-package camp.nextstep.edu.memo
+package camp.nextstep.edu.memo.edit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
