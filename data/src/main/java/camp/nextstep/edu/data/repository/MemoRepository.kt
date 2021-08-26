@@ -38,6 +38,7 @@ class MemoRepository internal constructor(
 
     override fun getMemo(id: String): Memo {
         return memoCache[id] ?: memoLocalSource.getMemo(id)
+            .also { memoCache[id] = it }
             .also { isCacheDirty = true }
     }
 
