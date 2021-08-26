@@ -8,17 +8,18 @@ class MemoRepositoryImplTest {
 
     @Test
     fun `캐싱된 메모가 있을 때, 메모리스트를 불러오면, 데이터를 받아와야한다`() {
-        // given
+        // given : 캐싱된 메모가 있을때,
         val cashedMemos = listOf(Memo("1", "cashing Memo1"), Memo("2", "cashing Memo2"))
         val repository = MemoRepositoryImpl.instance
-
-        // when
         cashedMemos.forEach {
             repository.addMemo(it)
         }
 
-        // then
-        assertThat(repository.getMemoList()).isEqualTo(cashedMemos)
+        // when : 메모리스트를 불러오면,
+        val resultList = repository.getMemoList()
+
+        // then : 데이터를 받아와야한다.
+        assertThat(resultList).isEqualTo(cashedMemos)
     }
 
 }
