@@ -39,7 +39,7 @@ class AddMemoFragment : Fragment() {
 
     private fun handleEvent(event: MemoEvent) {
         when (event) {
-            MemoEvent.Cancel -> findNavController().navigateUp()
+            MemoEvent.Cancel -> findNavController().popBackStack()
             MemoEvent.Complete -> findNavController().navigate(R.id.navigation_memo_list)
         }.exhaustive
     }

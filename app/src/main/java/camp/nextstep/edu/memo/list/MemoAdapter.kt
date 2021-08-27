@@ -2,6 +2,7 @@ package camp.nextstep.edu.memo.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.databinding.ItemMemoBinding
@@ -26,14 +27,25 @@ class MemoAdapter(
         holder.bind(items[position])
     }
 
-    fun setList(list: List<Memo>) {
+    fun setList(newList: List<Memo>) {
+        val result = getDiff(newList)
         items.clear()
-        items.addAll(list)
-        notifyDataSetChanged()
+        items.addAll(newList)
+        result.dispatchUpdatesTo(this)
     }
 
-    override fun getItemCount() = items.size
+    private fun getDiff(newList: List<Memo>) =
+        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = items.size
+            override fun getNewListSize() = newList.size
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                items[oldItemPosition].id == newList[newItemPosition].id
 
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                items[oldItemPosition] == newList[newItemPosition]
+        })
+
+    override fun getItemCount() = items.size
 }
 
 class MemoViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
