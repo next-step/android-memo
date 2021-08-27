@@ -19,7 +19,15 @@ object MemoLocalCashingDataSource : MemoDataSource {
         }
     }
 
-    private fun getMemo(memoId: String): Memo? {
+    override fun getMemo(memoId: String): Memo? {
         return memoList.find { it.id == memoId }
+    }
+
+    override fun editMemo(memo: Memo) {
+        memoList.forEach {
+            if (it.id == memo.id) {
+                it.value = memo.value
+            }
+        }
     }
 }
