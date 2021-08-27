@@ -12,4 +12,14 @@ object MemoLocalCashingDataSource : MemoDataSource {
     override fun addMemo(memo: Memo) {
         memoList.add(memo)
     }
+
+    override fun deleteMemo(memoId: String) {
+        getMemo(memoId)?.let {
+            memoList.remove(it)
+        }
+    }
+
+    private fun getMemo(memoId: String): Memo? {
+        return memoList.find { it.id == memoId }
+    }
 }

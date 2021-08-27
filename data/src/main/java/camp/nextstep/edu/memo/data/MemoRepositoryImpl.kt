@@ -16,6 +16,10 @@ class MemoRepositoryImpl(
         dataSource.addMemo(memo)
     }
 
+    override fun deleteMemo(memoId: String) {
+        dataSource.deleteMemo(memoId)
+    }
+
     companion object {
         val instance = MemoRepositoryImpl()
     }

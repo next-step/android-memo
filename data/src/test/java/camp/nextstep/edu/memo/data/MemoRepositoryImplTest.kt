@@ -22,4 +22,21 @@ class MemoRepositoryImplTest {
         assertThat(resultList).isEqualTo(cashedMemos)
     }
 
+    @Test
+    fun `삭제할 메모가 있을 때, 메모Id를 통해 삭제하면, 메모가 삭제되어야한다`() {
+        // given : 삭제할 메모가 있을때,
+        val targetMemo = Memo("1", "cashing Memo1")
+        val cashedMemos = listOf(targetMemo, Memo("2", "cashing Memo2"))
+        val repository = MemoRepositoryImpl.instance
+        cashedMemos.forEach {
+            repository.addMemo(it)
+        }
+        // when : 메모를 삭제하면,
+        repository.deleteMemo(targetMemo.id)
+        val resultList = repository.getMemoList()
+
+        // then : 메모가 삭제되어야한다.
+        assertThat(resultList).doesNotContain(targetMemo)
+    }
+
 }

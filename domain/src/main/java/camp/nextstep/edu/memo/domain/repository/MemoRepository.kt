@@ -5,4 +5,5 @@ import camp.nextstep.edu.memo.domain.entity.Memo
 interface MemoRepository {
     fun getMemoList(): List<Memo>
     fun addMemo(memo: Memo)
+    fun deleteMemo(memoId: String)
 }
