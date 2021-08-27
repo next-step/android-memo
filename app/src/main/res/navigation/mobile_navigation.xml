@@ -27,4 +27,21 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_memo_edit"
+        android:name="camp.nextstep.edu.memo.edit.EditMemoFragment"
+        android:label="@string/memo_edit"
+        tools:layout="@layout/fragment_memo_edit">
+        <argument
+            android:name="memoId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_navigation_memo_edit_to_navigation_memo_list"
+            app:destination="@id/navigation_memo_list"
+            app:popUpTo="@id/navigation_memo_list"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+
 </navigation>

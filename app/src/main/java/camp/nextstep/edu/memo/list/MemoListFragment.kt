@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,7 +17,7 @@ class MemoListFragment : Fragment() {
     private lateinit var binding: FragmentMemoListBinding
     private val adapter: MemoAdapter by lazy {
         MemoAdapter(
-            clickEvent = { memoId -> },
+            clickEvent = { memoId -> gotoEdit(memoId) },
             longClickEvent = { memoId -> showDeleteDialog(memoId) },
         )
     }
@@ -47,8 +48,17 @@ class MemoListFragment : Fragment() {
 
     private fun initListener() {
         with(binding) {
-            buttonCreate.setOnClickListener { findNavController().navigate(R.id.navigation_memo_add) }
+            buttonCreate.setOnClickListener { gotoAdd() }
         }
+    }
+
+    private fun gotoAdd() {
+        findNavController().navigate(R.id.navigation_memo_add)
+    }
+
+    private fun gotoEdit(memoId: String) {
+        val bundle = bundleOf(MEMO_ID to memoId)
+        findNavController().navigate(R.id.navigation_memo_edit, bundle)
     }
 
     private fun showDeleteDialog(memoId: String) {
@@ -64,5 +74,6 @@ class MemoListFragment : Fragment() {
 
     companion object {
         fun newInstance() = MemoListFragment()
+        val MEMO_ID = "memoId"
     }
 }

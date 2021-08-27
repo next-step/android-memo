@@ -3,6 +3,7 @@ package camp.nextstep.edu.memo.add
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
+import camp.nextstep.edu.memo.util.MemoEvent
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
