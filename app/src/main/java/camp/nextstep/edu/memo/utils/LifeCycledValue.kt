@@ -33,7 +33,7 @@ private class LifeCycledValue<T : Any>(
             else -> synchronized(this) {
                 thisRef.lifecycle.removeObserver(this)
                 thisRef.lifecycle.addObserver(this)
-                initializer().also { this.value = it }.also { println("value 할당됨 $it") }
+                initializer().also { this.value = it }
             }
         }
     }
