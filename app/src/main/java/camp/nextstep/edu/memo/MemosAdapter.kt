@@ -17,7 +17,7 @@ class MemosAdapter : ListAdapter<Memo, MemosAdapter.ViewHolder>(ItemComparator()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemMemoBinding.inflate(layoutInflater)
+        val binding = ItemMemoBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
