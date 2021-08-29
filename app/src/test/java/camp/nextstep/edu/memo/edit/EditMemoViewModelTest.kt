@@ -6,7 +6,12 @@ import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.utils.InstantTaskExecutorExtension
 import camp.nextstep.edu.memo.utils.takeValue
 import com.google.common.truth.Truth.assertThat
-import io.mockk.*
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
@@ -52,8 +57,8 @@ class EditMemoViewModelTest {
         // then
         val actualMemo = memoCaptureSlot.captured
 
-        verify(exactly = 1) { memosRepository.save(any()) }
         assertAll(
+            { verify(exactly = 1) { memosRepository.save(any()) } },
             { assertThat(actualMemo.title).isEqualTo("title") },
             { assertThat(actualMemo.content).isEqualTo("content") },
             { assertThat(editMemoViewModel.memoSaved.takeValue()).isNull() },
@@ -67,7 +72,9 @@ class EditMemoViewModelTest {
         editMemoViewModel.saveMemo()
 
         // then
-        verify(exactly = 0) { memosRepository.save(any()) }
-        assertThat(editMemoViewModel.toastMessage.takeValue()).isEqualTo(R.string.fill_memo_title)
+        assertAll(
+            { verify(exactly = 0) { memosRepository.save(any()) } },
+            { assertThat(editMemoViewModel.toastMessage.takeValue()).isEqualTo(R.string.fill_memo_title) },
+        )
     }
 }
