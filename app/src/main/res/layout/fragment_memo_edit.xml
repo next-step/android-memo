@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="camp.nextstep.edu.memo.add.AddMemoViewModel" />
+            type="camp.nextstep.edu.memo.edit.EditMemoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:onClick="@{() -> viewModel.addMemo()}"
+            android:onClick="@{() -> viewModel.editMemo()}"
             android:text="@string/ok"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"

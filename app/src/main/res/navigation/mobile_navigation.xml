@@ -9,7 +9,7 @@
         android:id="@+id/navigation_memo_list"
         android:name="camp.nextstep.edu.memo.list.MemoListFragment"
         android:label="@string/memo_list"
-        tools:layout="@layout/fragment_memo_list" >
+        tools:layout="@layout/fragment_memo_list">
         <action
             android:id="@+id/action_navigation_memo_list_to_navigation_memo_add"
             app:destination="@id/navigation_memo_add" />
@@ -19,10 +19,29 @@
         android:id="@+id/navigation_memo_add"
         android:name="camp.nextstep.edu.memo.add.AddMemoFragment"
         android:label="@string/memo_add"
-        tools:layout="@layout/fragment_memo_add" >
+        tools:layout="@layout/fragment_memo_add">
         <action
             android:id="@+id/action_navigation_memo_add_to_navigation_memo_list"
-            app:destination="@id/navigation_memo_list" />
+            app:destination="@id/navigation_memo_list"
+            app:popUpTo="@id/navigation_memo_list"
+            app:popUpToInclusive="true" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_memo_edit"
+        android:name="camp.nextstep.edu.memo.edit.EditMemoFragment"
+        android:label="@string/memo_edit"
+        tools:layout="@layout/fragment_memo_edit">
+        <argument
+            android:name="memoId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_navigation_memo_edit_to_navigation_memo_list"
+            app:destination="@id/navigation_memo_list"
+            app:popUpTo="@id/navigation_memo_list"
+            app:popUpToInclusive="true" />
+    </fragment>
+
 
 </navigation>
