@@ -2,6 +2,7 @@ package camp.nextstep.edu.memo.edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.domain.Memo
 import camp.nextstep.edu.domain.MemosSource
 import camp.nextstep.edu.memo.R
@@ -14,7 +15,7 @@ import camp.nextstep.edu.memo.utils.SingleLiveEvent
 
 class EditMemoViewModel(
     private val memosRepository: MemosSource,
-) {
+) : ViewModel() {
     private val _memoSaved = SingleLiveEvent<Unit>()
     val memoSaved: LiveData<Unit> = _memoSaved
 
@@ -26,7 +27,7 @@ class EditMemoViewModel(
 
     fun saveMemo() {
         val title = this.title.value.orEmpty()
-        if(title.isBlank()){
+        if (title.isBlank()) {
             _toastMessage.value = R.string.fill_memo_title
             return
         }
