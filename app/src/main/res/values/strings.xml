@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AndroidMemo</string>
     <string name="create_memo">메모 추가하기</string>
+    <string name="fill_memo_title">제목을 입력해주세요</string>
 </resources>
