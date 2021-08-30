@@ -19,6 +19,11 @@ class MemosViewModel(
         loadMemoList()
     }
 
+    fun deleteMemo(memoId: String) {
+        memoRepository.deleteMemo(memoId)
+        loadMemoList()
+    }
+
     private fun loadMemoList() {
         _memoList.value = memoRepository.getMemoList()
     }

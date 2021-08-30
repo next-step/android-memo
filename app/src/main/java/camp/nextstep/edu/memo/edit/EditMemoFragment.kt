@@ -1,4 +1,4 @@
-package camp.nextstep.edu.memo.add
+package camp.nextstep.edu.memo.edit
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,21 +8,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import camp.nextstep.edu.memo.R
-import camp.nextstep.edu.memo.databinding.FragmentMemoAddBinding
+import camp.nextstep.edu.memo.databinding.FragmentMemoEditBinding
+import camp.nextstep.edu.memo.list.MemoListFragment
 import camp.nextstep.edu.memo.util.EventObserver
 import camp.nextstep.edu.memo.util.MemoEvent
 import camp.nextstep.edu.memo.util.exhaustive
 
-class AddMemoFragment : Fragment() {
-    private lateinit var binding: FragmentMemoAddBinding
-    private val viewModel by viewModels<AddMemoViewModel>()
+class EditMemoFragment : Fragment() {
+    private lateinit var binding: FragmentMemoEditBinding
+    private val viewModel by viewModels<EditMemoViewModel> {
+        EditMemoViewModel.Factory(
+            arguments?.getString(MemoListFragment.MEMO_ID) ?: throw Exception("invalid memoId")
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_memo_add, container, false)
-        binding = FragmentMemoAddBinding.bind(root)
+        val root = inflater.inflate(R.layout.fragment_memo_edit, container, false)
+        binding = FragmentMemoEditBinding.bind(root)
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
         return binding.root
@@ -46,6 +51,6 @@ class AddMemoFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = AddMemoFragment()
+        fun newInstance() = EditMemoFragment()
     }
 }
