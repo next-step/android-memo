@@ -26,7 +26,7 @@ class EditMemoViewModelTest {
     @Before
     fun setUp() {
         memoRepository = mockk()
-        every { memoRepository.getMemo(memoId) } answers { expectedMemo }
+        every { memoRepository.findMemo(memoId) } answers { expectedMemo }
 
         viewModel = EditMemoViewModel(
             memoId = memoId,
@@ -51,7 +51,9 @@ class EditMemoViewModelTest {
         // given
         val editText = "editTestText"
         val expressionSlot = slot<Memo>()
-        every { memoRepository.editMemo(capture(expressionSlot)) } answers { nothing }
+        every { memoRepository.editMemo(capture(expressionSlot)) } answers {
+            Result.success(Memo.newInstance(""))
+        }
 
         // when
         viewModel.memo.value = editText
@@ -66,7 +68,7 @@ class EditMemoViewModelTest {
     @Test
     fun `변경 버튼을 누르면, 메모가 완료 되어야한다`() {
         // given
-        every { memoRepository.editMemo(expectedMemo) } answers { nothing }
+        every { memoRepository.editMemo(expectedMemo) } answers { Result.success(Memo.newInstance("")) }
 
         // when
         viewModel.editMemo()
@@ -74,6 +76,7 @@ class EditMemoViewModelTest {
         // then
         assertThat(viewModel.actionEvent.value?.peekContent()).isEqualTo(MemoEvent.Complete)
     }
+
 
     @Test
     fun `취소 버튼를 누르면, 취소가 되어야한다`() {

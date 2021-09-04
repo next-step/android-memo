@@ -26,6 +26,10 @@ class EditMemoViewModel(
     val actionEvent: LiveData<ViewModelEvent<MemoEvent>>
         get() = _actionEvent
 
+    private val _errorEvent = MutableLiveData<ViewModelEvent<String>>()
+    val errorEvent: LiveData<ViewModelEvent<String>>
+        get() = _errorEvent
+
     val memo = MutableLiveData<String>()
 
     init {
@@ -33,12 +37,16 @@ class EditMemoViewModel(
     }
 
     private fun loadMemo() {
-        memo.value = memoRepository.getMemo(memoId)?.value ?: ""
+        memo.value = memoRepository.findMemo(memoId)?.value ?: ""
     }
 
     fun editMemo() {
-        memoRepository.editMemo(Memo(memoId, memo.value ?: ""))
-        _actionEvent.value = ViewModelEvent(MemoEvent.Complete)
+        val result = memoRepository.editMemo(Memo(memoId, memo.value ?: ""))
+        if (result.isSuccess) {
+            _actionEvent.value = ViewModelEvent(MemoEvent.Complete)
+        } else {
+            _errorEvent.value = ViewModelEvent(result.exceptionOrNull()?.localizedMessage ?: "")
+        }
     }
 
     fun cancel() {

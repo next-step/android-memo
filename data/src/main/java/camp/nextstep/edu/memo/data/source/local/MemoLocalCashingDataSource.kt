@@ -14,20 +14,23 @@ object MemoLocalCashingDataSource : MemoDataSource {
     }
 
     override fun deleteMemo(memoId: String) {
-        getMemo(memoId)?.let {
+        findMemo(memoId)?.let {
             memoList.remove(it)
         }
     }
 
-    override fun getMemo(memoId: String): Memo? {
+    override fun findMemo(memoId: String): Memo? {
         return memoList.find { it.id == memoId }
     }
 
-    override fun editMemo(memo: Memo) {
-        memoList.forEach {
-            if (it.id == memo.id) {
-                it.value = memo.value
+    override fun editMemo(inputMemo: Memo): Memo? {
+        memoList.forEach { memo ->
+            if (memo.id == inputMemo.id) {
+                memo.value = inputMemo.value
+                return memo
             }
         }
+        return null
     }
+
 }

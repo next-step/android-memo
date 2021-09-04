@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -38,9 +39,9 @@ class EditMemoFragment : Fragment() {
         initObserver()
     }
 
-
     private fun initObserver() {
         viewModel.actionEvent.observe(viewLifecycleOwner, EventObserver(::handleEvent))
+        viewModel.errorEvent.observe(viewLifecycleOwner, EventObserver(::handleError))
     }
 
     private fun handleEvent(event: MemoEvent) {
@@ -48,6 +49,11 @@ class EditMemoFragment : Fragment() {
             MemoEvent.Cancel -> findNavController().popBackStack()
             MemoEvent.Complete -> findNavController().navigate(R.id.navigation_memo_list)
         }.exhaustive
+    }
+
+
+    private fun handleError(error: String) {
+        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
