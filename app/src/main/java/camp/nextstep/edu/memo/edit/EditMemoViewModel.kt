@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import camp.nextstep.edu.memo.data.MemoRepositoryImpl
+import camp.nextstep.edu.memo.data.di.DataModuleInjector
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
 import camp.nextstep.edu.memo.util.MemoEvent
 import camp.nextstep.edu.memo.util.ViewModelEvent
 
 class EditMemoViewModel(
-    private val memoRepository: MemoRepository = MemoRepositoryImpl.instance,
+    private val memoRepository: MemoRepository = DataModuleInjector.provideMemoRepository(),
     private val memoId: String
 ) : ViewModel() {
 

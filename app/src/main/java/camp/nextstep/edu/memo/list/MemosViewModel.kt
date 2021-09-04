@@ -3,12 +3,12 @@ package camp.nextstep.edu.memo.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import camp.nextstep.edu.memo.data.MemoRepositoryImpl
+import camp.nextstep.edu.memo.data.di.DataModuleInjector
 import camp.nextstep.edu.memo.domain.entity.Memo
 import camp.nextstep.edu.memo.domain.repository.MemoRepository
 
 class MemosViewModel(
-    private val memoRepository: MemoRepository = MemoRepositoryImpl.instance
+    private val memoRepository: MemoRepository = DataModuleInjector.provideMemoRepository()
 ) : ViewModel() {
 
     private val _memoList = MutableLiveData<List<Memo>>()
