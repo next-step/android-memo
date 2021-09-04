@@ -3,7 +3,7 @@ package camp.nextstep.edu.memo.data.source.local
 import camp.nextstep.edu.memo.data.source.MemoDataSource
 import camp.nextstep.edu.memo.domain.entity.Memo
 
-object MemoLocalCashingDataSource : MemoDataSource {
+internal object MemoLocalCashingDataSource : MemoDataSource {
 
     private val memoList = mutableListOf<Memo>()
 
