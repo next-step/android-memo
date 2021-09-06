@@ -17,7 +17,7 @@ import java.util.*
 class EditMemoViewModel(
     private val memosRepository: MemosSource,
 ) : ViewModel() {
-    private val _memoSaved = SingleLiveEvent<Unit>()
+    private val _memoSaved = MutableLiveData<Unit>()
     val memoSaved: LiveData<Unit> = _memoSaved
 
     private val _toastMessage = SingleLiveEvent<Int>()
@@ -40,7 +40,7 @@ class EditMemoViewModel(
             id = memoId ?: UUID.randomUUID().toString()
         )
         memosRepository.save(memo)
-        _memoSaved.call()
+        _memoSaved.value = Unit
     }
 
     fun loadMemo(memoId: String? = null) {

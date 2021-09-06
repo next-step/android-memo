@@ -61,7 +61,7 @@ class EditMemoViewModelTest {
             { verify(exactly = 1) { memosRepository.save(any()) } },
             { assertThat(actualMemo.title).isEqualTo("title") },
             { assertThat(actualMemo.content).isEqualTo("content") },
-            { assertThat(editMemoViewModel.memoSaved.takeValue()).isNull() },
+            { assertThat(editMemoViewModel.memoSaved.takeValue()).isEqualTo(Unit) },
         )
     }
 
