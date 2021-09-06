@@ -36,15 +36,20 @@ class MemosRepository internal constructor(
         isCacheDirty = false
     }
 
-    override fun getMemo(id: String): Memo {
+    override fun getMemo(id: String): Memo? {
         return memoCache[id] ?: memosLocalSource.getMemo(id)
-            .also { memoCache[id] = it }
-            .also { isCacheDirty = true }
+            ?.also { memoCache[id] = it }
+            ?.also { isCacheDirty = true }
+    }
+
+    override fun deleteMemo(id: String) {
+        memoCache.remove(id)
+        memosLocalSource.deleteMemo(id)
     }
 
     companion object {
-        private var instance: MemosRepository? = null
 
+        private var instance: MemosRepository? = null
         fun getInstance(): MemosSource = synchronized(this) {
             instance ?: MemosRepository(MemosLocalSource())
                 .also { this.instance = it }

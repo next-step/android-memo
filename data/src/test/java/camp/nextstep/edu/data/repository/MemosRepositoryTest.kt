@@ -6,7 +6,6 @@ import camp.nextstep.edu.domain.MemosSource
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import org.junit.jupiter.api.assertThrows
 
 /**
  * Created By Malibin
@@ -61,8 +60,12 @@ class MemosRepositoryTest {
                 return localMemos
             }
 
-            override fun getMemo(id: String): Memo {
+            override fun getMemo(id: String): Memo? {
                 error("")
+            }
+
+            override fun deleteMemo(id: String) {
+                /*Nothing*/
             }
         })
 
@@ -91,8 +94,12 @@ class MemosRepositoryTest {
                 return emptyList()
             }
 
-            override fun getMemo(id: String): Memo {
+            override fun getMemo(id: String): Memo? {
                 error("")
+            }
+
+            override fun deleteMemo(id: String) {
+                /*Nothing*/
             }
         })
 
@@ -117,8 +124,12 @@ class MemosRepositoryTest {
                 return emptyList()
             }
 
-            override fun getMemo(id: String): Memo {
+            override fun getMemo(id: String): Memo? {
                 error("")
+            }
+
+            override fun deleteMemo(id: String) {
+                /*Nothing*/
             }
         })
 
@@ -149,15 +160,15 @@ class MemosRepositoryTest {
     }
 
     @Test
-    fun `저장되어 있지 않은 메모 id로는 메모를 가져올 수 없다`() {
+    fun `저장되어 있지 않은 메모 id로 메모를 가져오면 null을 반환한다`() {
         // given
         val memoRepository = MemosRepository(MemosLocalSource())
 
         // when
-        val exception = assertThrows<IllegalArgumentException> { memoRepository.getMemo("1") }
+        val actualMemo = memoRepository.getMemo("1")
 
         // then
-        assertThat(exception).hasMessageThat().contains("cannot find memo of id : 1")
+        assertThat(actualMemo).isNull()
     }
 
     @Test
@@ -174,9 +185,13 @@ class MemosRepositoryTest {
                 return emptyList()
             }
 
-            override fun getMemo(id: String): Memo {
+            override fun getMemo(id: String): Memo? {
                 getMemoCallCount++
                 return memo
+            }
+
+            override fun deleteMemo(id: String) {
+                /*Nothing*/
             }
         })
 
@@ -206,9 +221,13 @@ class MemosRepositoryTest {
                 return emptyList()
             }
 
-            override fun getMemo(id: String): Memo {
+            override fun getMemo(id: String): Memo? {
                 getMemoCallCount++
                 return memo
+            }
+
+            override fun deleteMemo(id: String) {
+                /*Nothing*/
             }
         })
 
@@ -234,9 +253,13 @@ class MemosRepositoryTest {
                 return emptyList()
             }
 
-            override fun getMemo(id: String): Memo {
+            override fun getMemo(id: String): Memo? {
                 getMemoCallCount++
                 return Memo("title", "content", "1")
+            }
+
+            override fun deleteMemo(id: String) {
+                /*Nothing*/
             }
         })
 
@@ -251,5 +274,23 @@ class MemosRepositoryTest {
 
         // then
         assertThat(getAllMemoCallCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `메모를 삭제할 수 있다`() {
+        // given
+        val memo = Memo(
+            title = "title",
+            content = "content",
+            id = "1"
+        )
+        val memoRepository = MemosRepository(MemosLocalSource(listOf(memo)))
+
+        // when
+        memoRepository.deleteMemo(memo.id)
+        val retrieveMemo = memoRepository.getMemo("1")
+
+        // then
+        assertThat(retrieveMemo).isNull()
     }
 }
