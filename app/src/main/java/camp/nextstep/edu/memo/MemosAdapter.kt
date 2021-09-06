@@ -15,7 +15,8 @@ import camp.nextstep.edu.memo.databinding.ItemMemoBinding
 
 class MemosAdapter : ListAdapter<Memo, MemosAdapter.ViewHolder>(ItemComparator()) {
 
-    private var memoClickListener: ((Memo) -> Unit)? = null
+    private var onMemoClickListener: ((Memo) -> Unit)? = null
+    private var onMemoLongClickListener: ((Memo) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -24,20 +25,29 @@ class MemosAdapter : ListAdapter<Memo, MemosAdapter.ViewHolder>(ItemComparator()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), memoClickListener)
+        holder.bind(getItem(position), onMemoClickListener, onMemoLongClickListener)
     }
 
     fun setOnMemoClickListener(listener: ((Memo) -> Unit)?) {
-        this.memoClickListener = listener
+        this.onMemoClickListener = listener
+    }
+
+    fun setOnMemoLongClickListener(listener: ((Memo) -> Unit)?) {
+        this.onMemoLongClickListener = listener
     }
 
     class ViewHolder(
         private val binding: ItemMemoBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(memo: Memo, listener: ((Memo) -> Unit)?) {
+        fun bind(
+            memo: Memo,
+            onItemClickListener: ((Memo) -> Unit)? = null,
+            onItemLongClickListener: ((Memo) -> Unit)? = null,
+        ) {
             binding.memo = memo
-            listener?.run { binding.root.setOnClickListener { listener(memo) } }
+            onItemClickListener?.run { binding.root.setOnClickListener { this(memo) } }
+            onItemLongClickListener?.run { binding.root.setOnLongClickListener { this(memo); true } }
         }
     }
 

@@ -45,7 +45,7 @@ class EditMemoViewModel(
 
     fun loadMemo(memoId: String? = null) {
         if (memoId.isNullOrBlank()) return
-        val memo = memosRepository.getMemo(memoId)
+        val memo = memosRepository.getMemo(memoId) ?: return
         this.title.value = memo.title
         this.content.value = memo.content
         this.memoId = memo.id
