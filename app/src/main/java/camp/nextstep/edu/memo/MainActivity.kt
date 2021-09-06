@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         initView(binding)
 
+        mainViewModel.loadAllMemos()
         mainViewModel.memos.observe(this) {
             memosAdapter.submitList(it)
         }
-        mainViewModel.loadAllMemos()
     }
 
     override fun onResume() {
@@ -34,10 +34,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.buttonCreate.setOnClickListener { deployAddMemoActivity() }
         binding.listMemos.adapter = memosAdapter
+        memosAdapter.setOnMemoClickListener { deployAddMemoActivity(it.id) }
     }
 
-    private fun deployAddMemoActivity() {
-        Intent(this, EditMemoActivity::class.java)
-            .also { startActivity(it) }
+    private fun deployAddMemoActivity(memoId: String? = null) {
+        val intent = Intent(this, EditMemoActivity::class.java)
+        memoId?.run { intent.putExtra(EditMemoActivity.KEY_MEMO_ID, this) }
+        startActivity(intent)
     }
 }
