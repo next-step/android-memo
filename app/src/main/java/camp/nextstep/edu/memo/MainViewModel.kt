@@ -20,4 +20,11 @@ class MainViewModel(
     fun loadAllMemos() {
         _memos.value = memosRepository.getAllMemos()
     }
+
+    fun deleteMemo(memoId: String) {
+        memosRepository.deleteMemo(memoId)
+        val currentMemos = _memos.value.orEmpty()
+        val memo = currentMemos.find { it.id == memoId } ?: return
+        _memos.value = currentMemos - memo
+    }
 }

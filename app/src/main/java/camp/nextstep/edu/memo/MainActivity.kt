@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding.buttonCreate.setOnClickListener { deployAddMemoActivity() }
         binding.listMemos.adapter = memosAdapter
         memosAdapter.setOnMemoClickListener { deployAddMemoActivity(it.id) }
-        memosAdapter.setOnMemoLongClickListener { showDeleteDialog() }
+        memosAdapter.setOnMemoLongClickListener { showDeleteDialog(it.id) }
     }
 
     private fun deployAddMemoActivity(memoId: String? = null) {
@@ -45,11 +45,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showDeleteDialog() {
+    private fun showDeleteDialog(memoId: String) {
         AlertDialog.Builder(this)
             .setMessage(R.string.are_you_sure_to_delete)
             .setNegativeButton(R.string.cancel) { _, _ -> }
-            .setPositiveButton(R.string.ok) { _, _ -> }
+            .setPositiveButton(R.string.ok) { _, _ -> mainViewModel.deleteMemo(memoId) }
             .create()
             .show()
     }
