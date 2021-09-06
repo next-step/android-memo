@@ -4,7 +4,6 @@ import camp.nextstep.edu.domain.Memo
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import org.junit.jupiter.api.assertThrows
 
 /**
  * Created By Malibin
@@ -53,14 +52,32 @@ class MemosLocalSourceTest {
     }
 
     @Test
-    fun `저장되어 있지 않은 메모 id로는 메모를 가져올 수 없다`() {
+    fun `저장되어 있지 않은 메모 id로 메모를 불러오면 null이 반환된다`() {
         // given
         val memoLocalSource = MemosLocalSource()
 
         // when
-        val exception = assertThrows<IllegalArgumentException> { memoLocalSource.getMemo("1") }
+        val actualMemo = memoLocalSource.getMemo("1")
 
         // then
-        assertThat(exception).hasMessageThat().contains("cannot find memo of id : 1")
+        assertThat(actualMemo).isNull()
+    }
+
+    @Test
+    fun `메모를 삭제할 수 있다`() {
+        // given
+        val memo = Memo(
+            title = "title",
+            content = "content",
+            id = "1"
+        )
+        val memoLocalSource = MemosLocalSource(listOf(memo))
+
+        // when
+        memoLocalSource.deleteMemo(memo.id)
+        val retrieveMemo = memoLocalSource.getMemo("1")
+
+        // then
+        assertThat(retrieveMemo).isNull()
     }
 }

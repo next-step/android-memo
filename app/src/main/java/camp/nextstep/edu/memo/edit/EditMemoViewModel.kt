@@ -7,6 +7,7 @@ import camp.nextstep.edu.domain.Memo
 import camp.nextstep.edu.domain.MemosSource
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.utils.SingleLiveEvent
+import java.util.*
 
 /**
  * Created By Malibin
@@ -16,7 +17,7 @@ import camp.nextstep.edu.memo.utils.SingleLiveEvent
 class EditMemoViewModel(
     private val memosRepository: MemosSource,
 ) : ViewModel() {
-    private val _memoSaved = SingleLiveEvent<Unit>()
+    private val _memoSaved = MutableLiveData<Unit>()
     val memoSaved: LiveData<Unit> = _memoSaved
 
     private val _toastMessage = SingleLiveEvent<Int>()
@@ -24,6 +25,7 @@ class EditMemoViewModel(
 
     val title = MutableLiveData("")
     val content = MutableLiveData("")
+    var memoId: String? = null
 
     fun saveMemo() {
         val title = this.title.value.orEmpty()
@@ -35,8 +37,17 @@ class EditMemoViewModel(
         val memo = Memo(
             title = title,
             content = content,
+            id = memoId ?: UUID.randomUUID().toString()
         )
         memosRepository.save(memo)
-        _memoSaved.call()
+        _memoSaved.value = Unit
+    }
+
+    fun loadMemo(memoId: String? = null) {
+        if (memoId.isNullOrBlank()) return
+        val memo = memosRepository.getMemo(memoId) ?: return
+        this.title.value = memo.title
+        this.content.value = memo.content
+        this.memoId = memo.id
     }
 }

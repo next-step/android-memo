@@ -4,9 +4,12 @@ import camp.nextstep.edu.data.local.MemosLocalSource
 import camp.nextstep.edu.domain.Memo
 import camp.nextstep.edu.domain.MemosSource
 import com.google.common.truth.Truth.assertThat
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import org.junit.jupiter.api.assertThrows
 
 /**
  * Created By Malibin
@@ -14,6 +17,14 @@ import org.junit.jupiter.api.assertThrows
  */
 
 class MemosRepositoryTest {
+    lateinit var memosRepository: MemosRepository
+    lateinit var memosLocalSource: MemosSource
+
+    @BeforeEach
+    fun setUp() {
+        memosLocalSource = mockk(relaxed = true)
+        memosRepository = MemosRepository(memosLocalSource)
+    }
 
     @Test
     fun `메모를 저장하고 꺼내올 수 있다`() {
@@ -49,85 +60,37 @@ class MemosRepositoryTest {
     @Test
     fun `모든 메모를 두 번 불러오면 두 번째는 캐시된 메모를 불러온다`() {
         // given
-        var getAllMemoCallCount = 0
         val localMemos = listOf(Memo("title", "content", "1"))
-        val memoRepository = MemosRepository(object : MemosSource {
-            override fun save(memo: Memo) {
-                /*Nothing*/
-            }
-
-            override fun getAllMemos(): List<Memo> {
-                getAllMemoCallCount++
-                return localMemos
-            }
-
-            override fun getMemo(id: String): Memo {
-                error("")
-            }
-        })
+        every { memosLocalSource.getAllMemos() } returns localMemos
 
         // when
-        memoRepository.getAllMemos()
-        val twiceRetrievedMemos = memoRepository.getAllMemos()
+        memosRepository.getAllMemos()
+        val twiceRetrievedMemos = memosRepository.getAllMemos()
 
         // then
         assertAll(
+            { verify(exactly = 1) { memosLocalSource.getAllMemos() } },
             { assertThat(twiceRetrievedMemos).containsExactlyElementsIn(localMemos) },
-            { assertThat(getAllMemoCallCount).isEqualTo(1) },
         )
     }
 
     @Test
     fun `처음 불러오는 모든 메모는 반드시 캐시가 아닌 Source 객체에서 가져온다`() {
-        // given
-        var getAllMemoCallCount = 0
-        val memoRepository = MemosRepository(object : MemosSource {
-            override fun save(memo: Memo) {
-                /*Nothing*/
-            }
-
-            override fun getAllMemos(): List<Memo> {
-                getAllMemoCallCount++
-                return emptyList()
-            }
-
-            override fun getMemo(id: String): Memo {
-                error("")
-            }
-        })
-
         // when
-        memoRepository.getAllMemos()
+        memosRepository.getAllMemos()
 
         // then
-        assertThat(getAllMemoCallCount).isEqualTo(1)
+        verify(exactly = 1) { memosLocalSource.getAllMemos() }
     }
 
     @Test
     fun `초기 상태일 때, 메모를 저장하고 모든 메모를 불러오면 캐시된 메모가 아닌 source 객체에서 불러온다`() {
-        // given
-        var getAllMemoCallCount = 0
-        val memoRepository = MemosRepository(object : MemosSource {
-            override fun save(memo: Memo) {
-                /*Nothing*/
-            }
-
-            override fun getAllMemos(): List<Memo> {
-                getAllMemoCallCount++
-                return emptyList()
-            }
-
-            override fun getMemo(id: String): Memo {
-                error("")
-            }
-        })
-
         // when
-        memoRepository.save(Memo("title", "content", "1"))
-        memoRepository.getAllMemos()
+        memosRepository.save(Memo("title", "content"))
+        memosRepository.getAllMemos()
 
         // then
-        assertThat(getAllMemoCallCount).isEqualTo(1)
+        verify(exactly = 1) { memosLocalSource.getAllMemos() }
     }
 
     @Test
@@ -149,107 +112,63 @@ class MemosRepositoryTest {
     }
 
     @Test
-    fun `저장되어 있지 않은 메모 id로는 메모를 가져올 수 없다`() {
+    fun `저장되어 있지 않은 메모 id로 메모를 가져오면 null을 반환한다`() {
         // given
         val memoRepository = MemosRepository(MemosLocalSource())
 
         // when
-        val exception = assertThrows<IllegalArgumentException> { memoRepository.getMemo("1") }
+        val actualMemo = memoRepository.getMemo("1")
 
         // then
-        assertThat(exception).hasMessageThat().contains("cannot find memo of id : 1")
+        assertThat(actualMemo).isNull()
     }
 
     @Test
     fun `메모를 저장하고 해당 메모를 가져오면, 캐시로부터 불러온다`() {
         // given
         val memo = Memo("title", "content", "1")
-        var getMemoCallCount = 0
-        val memoRepository = MemosRepository(object : MemosSource {
-            override fun save(memo: Memo) {
-                /*Nothing*/
-            }
-
-            override fun getAllMemos(): List<Memo> {
-                return emptyList()
-            }
-
-            override fun getMemo(id: String): Memo {
-                getMemoCallCount++
-                return memo
-            }
-        })
 
         // when
-        memoRepository.save(memo)
-        val retrieveMemo = memoRepository.getMemo("1")
-
+        memosRepository.save(memo)
+        val retrieveMemo = memosRepository.getMemo("1")
 
         // then
         assertAll(
             { assertThat(memo).isEqualTo(retrieveMemo) },
-            { assertThat(getMemoCallCount).isEqualTo(0) },
+            { verify(exactly = 0) { memosLocalSource.getMemo(any()) } },
         )
     }
 
     @Test
-    fun `특정 메모를 가져오지 못하면, 특정 메모를 찾아 반환한다`() {
-        // given
-        val memo = Memo("title", "content", "1")
-        var getMemoCallCount = 0
-        val memoRepository = MemosRepository(object : MemosSource {
-            override fun save(memo: Memo) {
-                /*Nothing*/
-            }
-
-            override fun getAllMemos(): List<Memo> {
-                return emptyList()
-            }
-
-            override fun getMemo(id: String): Memo {
-                getMemoCallCount++
-                return memo
-            }
-        })
-
+    fun `특정 메모를 캐시에서 가져오지 못했다면, 다음 모든 메모는 source에서 가져온다`() {
         // when
-        val retrieveMemo = memoRepository.getMemo("1")
+        memosRepository.getMemo("1")
 
         // then
-        assertThat(memo).isEqualTo(retrieveMemo)
+        verify(exactly = 1) { memosLocalSource.getMemo(any()) }
+
+        // when
+        memosRepository.getAllMemos()
+
+        // then
+        verify(exactly = 1) { memosLocalSource.getAllMemos() }
     }
 
     @Test
-    fun `특정 메모를 캐시에서 가져오지 못했다면, 다음 모든 메모는 source에서 가져온다`() {
+    fun `메모를 삭제할 수 있다`() {
         // given
-        var getMemoCallCount = 0
-        var getAllMemoCallCount = 0
-        val memoRepository = MemosRepository(object : MemosSource {
-            override fun save(memo: Memo) {
-                /*Nothing*/
-            }
-
-            override fun getAllMemos(): List<Memo> {
-                getAllMemoCallCount++
-                return emptyList()
-            }
-
-            override fun getMemo(id: String): Memo {
-                getMemoCallCount++
-                return Memo("title", "content", "1")
-            }
-        })
+        val memo = Memo(
+            title = "title",
+            content = "content",
+            id = "1"
+        )
+        val memoRepository = MemosRepository(MemosLocalSource(listOf(memo)))
 
         // when
-        memoRepository.getMemo("1")
+        memoRepository.deleteMemo(memo.id)
+        val retrieveMemo = memoRepository.getMemo("1")
 
         // then
-        assertThat(getMemoCallCount).isEqualTo(1)
-
-        // when
-        memoRepository.getAllMemos()
-
-        // then
-        assertThat(getAllMemoCallCount).isEqualTo(1)
+        assertThat(retrieveMemo).isNull()
     }
 }

@@ -49,4 +49,20 @@ class MainViewModelTest {
         val actualMemos = mainViewModel.memos.takeValue()
         assertThat(actualMemos).containsExactlyElementsIn(expectedMemos).inOrder()
     }
+
+    @Test
+    fun `메모를 삭제할 수 있다`() {
+        // given
+        val memos = listOf(
+            Memo("title1", "content1", "id"),
+        )
+        every { memosRepository.getAllMemos() } returns memos
+        mainViewModel.loadAllMemos()
+
+        // when
+        mainViewModel.deleteMemo("id")
+
+        // then
+        assertThat(mainViewModel.memos.takeValue()).isEmpty()
+    }
 }

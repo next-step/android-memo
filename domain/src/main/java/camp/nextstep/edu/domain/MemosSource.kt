@@ -11,5 +11,7 @@ interface MemosSource {
 
     fun getAllMemos(): List<Memo>
 
-    fun getMemo(id: String): Memo
+    fun getMemo(id: String): Memo?
+
+    fun deleteMemo(id: String)
 }

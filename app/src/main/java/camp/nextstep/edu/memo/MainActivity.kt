@@ -3,6 +3,7 @@ package camp.nextstep.edu.memo
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.memo.databinding.ActivityMainBinding
 import camp.nextstep.edu.memo.edit.EditMemoActivity
@@ -19,10 +20,10 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         initView(binding)
 
+        mainViewModel.loadAllMemos()
         mainViewModel.memos.observe(this) {
             memosAdapter.submitList(it)
         }
-        mainViewModel.loadAllMemos()
     }
 
     override fun onResume() {
@@ -34,10 +35,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.buttonCreate.setOnClickListener { deployAddMemoActivity() }
         binding.listMemos.adapter = memosAdapter
+        memosAdapter.setOnMemoClickListener { deployAddMemoActivity(it.id) }
+        memosAdapter.setOnMemoLongClickListener { showDeleteDialog(it.id) }
     }
 
-    private fun deployAddMemoActivity() {
-        Intent(this, EditMemoActivity::class.java)
-            .also { startActivity(it) }
+    private fun deployAddMemoActivity(memoId: String? = null) {
+        val intent = Intent(this, EditMemoActivity::class.java)
+        memoId?.run { intent.putExtra(EditMemoActivity.KEY_MEMO_ID, this) }
+        startActivity(intent)
+    }
+
+    private fun showDeleteDialog(memoId: String) {
+        AlertDialog.Builder(this)
+            .setMessage(R.string.are_you_sure_to_delete)
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .setPositiveButton(R.string.ok) { _, _ -> mainViewModel.deleteMemo(memoId) }
+            .create()
+            .show()
     }
 }

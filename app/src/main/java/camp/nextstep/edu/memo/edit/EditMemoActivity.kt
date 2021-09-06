@@ -17,6 +17,7 @@ class EditMemoActivity : AppCompatActivity() {
         val binding = ActivityEditMemoBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.viewModel = editMemoViewModel
+        editMemoViewModel.loadMemo(getMemoId())
 
         editMemoViewModel.memoSaved.observe(this) {
             setResult(Activity.RESULT_OK)
@@ -25,5 +26,11 @@ class EditMemoActivity : AppCompatActivity() {
         editMemoViewModel.toastMessage.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun getMemoId(): String? = intent.getStringExtra(KEY_MEMO_ID)
+
+    companion object {
+        const val KEY_MEMO_ID = "KEY_MEMO_ID"
     }
 }

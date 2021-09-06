@@ -16,8 +16,12 @@ internal class MemosLocalSource(
         return memory.toList()
     }
 
-    override fun getMemo(id: String): Memo {
+    override fun getMemo(id: String): Memo? {
         return memory.find { it.id == id }
-            ?: throw IllegalArgumentException("cannot find memo of id : $id")
+    }
+
+    override fun deleteMemo(id: String) {
+        val memo = memory.find { it.id == id } ?: return
+        memory.remove(memo)
     }
 }
