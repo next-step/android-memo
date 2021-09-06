@@ -77,4 +77,78 @@ class EditMemoViewModelTest {
             { assertThat(editMemoViewModel.toastMessage.takeValue()).isEqualTo(R.string.fill_memo_title) },
         )
     }
+
+    @Test
+    fun `메모 ID로 해당 메모 내용을 불러올 수 있다`() {
+        // given
+        val memo = Memo(
+            title = "TestTitle",
+            content = "TestContent",
+            id = "TestId"
+        )
+        every { memosRepository.getMemo("TestId") } returns memo
+
+        // when
+        editMemoViewModel.loadMemo("TestId")
+
+
+        // then
+        assertAll(
+            { assertThat(editMemoViewModel.title.takeValue()).isEqualTo("TestTitle") },
+            { assertThat(editMemoViewModel.content.takeValue()).isEqualTo("TestContent") },
+        )
+    }
+    
+    @Test
+    fun `메모 id가 공백이면 메모를 불러오지 않는다`(){
+        // when
+        editMemoViewModel.loadMemo("")
+
+        // then
+        assertAll(
+            { verify(exactly = 0) { memosRepository.getMemo(any()) } },
+            { assertThat(editMemoViewModel.title.takeValue()).isEqualTo("") },
+            { assertThat(editMemoViewModel.content.takeValue()).isEqualTo("") },
+        )
+    }
+
+    @Test
+    fun `메모 id가 null이면 메모를 불러오지 않는다`(){
+        // when
+        editMemoViewModel.loadMemo(null)
+
+        // then
+        assertAll(
+            { verify(exactly = 0) { memosRepository.getMemo(any()) } },
+            { assertThat(editMemoViewModel.title.takeValue()).isEqualTo("") },
+            { assertThat(editMemoViewModel.content.takeValue()).isEqualTo("") },
+        )
+    }
+
+    @Test
+    fun `메모를 내용을 수정하고 저장해도 메모의 ID는 변하지 않는다`(){
+        // given
+        val memo = Memo(
+            title = "TestTitle",
+            content = "TestContent",
+            id = "TestId"
+        )
+        val memoCaptureSlot = slot<Memo>()
+        every { memosRepository.save(capture(memoCaptureSlot)) } just Runs
+        every { memosRepository.getMemo("TestId") } returns memo
+        editMemoViewModel.loadMemo("TestId")
+
+        // when
+        editMemoViewModel.title.value = "ModifiedTitle"
+        editMemoViewModel.content.value = "ModifiedContent"
+        editMemoViewModel.saveMemo()
+
+        // then
+        val capturedMemo = memoCaptureSlot.captured
+        assertAll(
+            { assertThat(capturedMemo.title).isEqualTo("ModifiedTitle") },
+            { assertThat(capturedMemo.content).isEqualTo("ModifiedContent") },
+            { assertThat(capturedMemo.id).isEqualTo("TestId") },
+        )
+    }
 }

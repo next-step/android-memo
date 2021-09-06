@@ -7,6 +7,7 @@ import camp.nextstep.edu.domain.Memo
 import camp.nextstep.edu.domain.MemosSource
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.utils.SingleLiveEvent
+import java.util.*
 
 /**
  * Created By Malibin
@@ -24,6 +25,7 @@ class EditMemoViewModel(
 
     val title = MutableLiveData("")
     val content = MutableLiveData("")
+    var memoId: String? = null
 
     fun saveMemo() {
         val title = this.title.value.orEmpty()
@@ -35,8 +37,17 @@ class EditMemoViewModel(
         val memo = Memo(
             title = title,
             content = content,
+            id = memoId ?: UUID.randomUUID().toString()
         )
         memosRepository.save(memo)
         _memoSaved.call()
+    }
+
+    fun loadMemo(memoId: String? = null) {
+        if (memoId.isNullOrBlank()) return
+        val memo = memosRepository.getMemo(memoId)
+        this.title.value = memo.title
+        this.content.value = memo.content
+        this.memoId = memo.id
     }
 }
