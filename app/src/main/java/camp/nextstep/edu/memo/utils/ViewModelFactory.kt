@@ -3,7 +3,7 @@ package camp.nextstep.edu.memo.utils
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import camp.nextstep.edu.data.repository.MemosRepository
+import camp.nextstep.edu.data.MemosRepositoryInjector
 import camp.nextstep.edu.memo.MainViewModel
 import camp.nextstep.edu.memo.edit.EditMemoViewModel
 
@@ -25,10 +25,10 @@ class ViewModelFactory(
     }
 
     private fun createMainViewModel(): MainViewModel {
-        return MainViewModel(MemosRepository.getInstance())
+        return MainViewModel(MemosRepositoryInjector.provideMemosRepository())
     }
 
     private fun createEditMemoViewModel(): EditMemoViewModel {
-        return EditMemoViewModel(MemosRepository.getInstance())
+        return EditMemoViewModel(MemosRepositoryInjector.provideMemosRepository())
     }
 }

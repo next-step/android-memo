@@ -17,8 +17,8 @@ import org.junit.jupiter.api.assertAll
  */
 
 class MemosRepositoryTest {
-    lateinit var memosRepository: MemosRepository
-    lateinit var memosLocalSource: MemosSource
+    private lateinit var memosRepository: MemosSource
+    private lateinit var memosLocalSource: MemosSource
 
     @BeforeEach
     fun setUp() {
@@ -45,16 +45,6 @@ class MemosRepositoryTest {
             { assertThat(retrieveMemos.size).isEqualTo(1) },
             { assertThat(retrieveMemos).isEqualTo(listOf(memo)) },
         )
-    }
-
-    @Test
-    fun `메모 저장소는 싱글턴 객체이다`() {
-        // given
-        val memoRepository1 = MemosRepository.getInstance()
-        val memoRepository2 = MemosRepository.getInstance()
-
-        // then
-        assertThat(memoRepository1).isEqualTo(memoRepository2)
     }
 
     @Test
