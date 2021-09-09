@@ -1,7 +1,7 @@
 package camp.nextstep.edu.memo.edit
 
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemosSource
+import camp.nextstep.edu.domain.MemosRepository
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.utils.InstantTaskExecutorExtension
 import camp.nextstep.edu.memo.utils.takeValue
@@ -31,7 +31,7 @@ class EditMemoViewModelTest {
     }
 
     lateinit var editMemoViewModel: EditMemoViewModel
-    lateinit var memosRepository: MemosSource
+    lateinit var memosRepository: MemosRepository
 
     @BeforeEach
     fun setUp() {

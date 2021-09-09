@@ -1,8 +1,8 @@
 package camp.nextstep.edu.data
 
 import camp.nextstep.edu.data.local.MemosLocalSource
-import camp.nextstep.edu.data.repository.MemosRepository
-import camp.nextstep.edu.domain.MemosSource
+import camp.nextstep.edu.data.repository.RealMemosRepository
+import camp.nextstep.edu.domain.MemosRepository
 
 /**
  * Created By Malibin
@@ -14,8 +14,8 @@ object MemosRepositoryInjector {
     private var instance: MemosRepository? = null
 
     @JvmStatic
-    fun provideMemosRepository(): MemosSource = synchronized(this) {
-        instance ?: MemosRepository(MemosLocalSource())
+    fun provideMemosRepository(): MemosRepository = synchronized(this) {
+        instance ?: RealMemosRepository(MemosLocalSource())
             .also { this.instance = it }
     }
 }

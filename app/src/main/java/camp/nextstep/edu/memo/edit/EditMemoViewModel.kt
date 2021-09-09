@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemosSource
+import camp.nextstep.edu.domain.MemosRepository
 import camp.nextstep.edu.memo.R
 import camp.nextstep.edu.memo.utils.SingleLiveEvent
 import java.util.*
@@ -15,7 +15,7 @@ import java.util.*
  */
 
 class EditMemoViewModel(
-    private val memosRepository: MemosSource,
+    private val memosRepository: MemosRepository,
 ) : ViewModel() {
     private val _memoSaved = MutableLiveData<Unit>()
     val memoSaved: LiveData<Unit> = _memoSaved

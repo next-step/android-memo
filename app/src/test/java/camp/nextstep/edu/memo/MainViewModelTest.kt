@@ -1,7 +1,7 @@
 package camp.nextstep.edu.memo
 
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemosSource
+import camp.nextstep.edu.domain.MemosRepository
 import camp.nextstep.edu.memo.utils.InstantTaskExecutorExtension
 import camp.nextstep.edu.memo.utils.takeValue
 import com.google.common.truth.Truth.assertThat
@@ -25,7 +25,7 @@ class MainViewModelTest {
     }
 
     lateinit var mainViewModel: MainViewModel
-    lateinit var memosRepository: MemosSource
+    lateinit var memosRepository: MemosRepository
 
     @BeforeEach
     fun setUp() {

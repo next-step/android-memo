@@ -1,9 +1,6 @@
-package camp.nextstep.edu.domain
+package camp.nextstep.edu.data
 
-/**
- * Created By Malibin
- * on 8월 24, 2021
- */
+import camp.nextstep.edu.domain.Memo
 
 interface MemosSource {
 

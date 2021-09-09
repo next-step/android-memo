@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemosSource
+import camp.nextstep.edu.domain.MemosRepository
 
 /**
  * Created By Malibin
@@ -12,7 +12,7 @@ import camp.nextstep.edu.domain.MemosSource
  */
 
 class MainViewModel(
-    private val memosRepository: MemosSource,
+    private val memosRepository: MemosRepository,
 ) : ViewModel() {
     private val _memos = MutableLiveData<List<Memo>>()
     val memos: LiveData<List<Memo>> = _memos
