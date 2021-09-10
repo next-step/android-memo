@@ -1,7 +1,7 @@
 package camp.nextstep.edu.data.local
 
+import camp.nextstep.edu.data.MemosSource
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemosSource
 
 internal class MemosLocalSource(
     initialMemos: List<Memo> = emptyList()

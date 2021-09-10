@@ -1,8 +1,8 @@
 package camp.nextstep.edu.data.repository
 
-import camp.nextstep.edu.data.local.MemosLocalSource
+import camp.nextstep.edu.data.MemosSource
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemosSource
+import camp.nextstep.edu.domain.MemosRepository
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -10,9 +10,9 @@ import java.util.concurrent.ConcurrentHashMap
  * on 8월 24, 2021
  */
 
-class MemosRepository internal constructor(
+internal class RealMemosRepository constructor(
     private val memosLocalSource: MemosSource,
-) : MemosSource {
+) : MemosRepository {
     private val memoCache: MutableMap<String, Memo> = ConcurrentHashMap()
 
     private var isCacheDirty: Boolean = true
@@ -45,14 +45,5 @@ class MemosRepository internal constructor(
     override fun deleteMemo(id: String) {
         memoCache.remove(id)
         memosLocalSource.deleteMemo(id)
-    }
-
-    companion object {
-
-        private var instance: MemosRepository? = null
-        fun getInstance(): MemosSource = synchronized(this) {
-            instance ?: MemosRepository(MemosLocalSource())
-                .also { this.instance = it }
-        }
     }
 }

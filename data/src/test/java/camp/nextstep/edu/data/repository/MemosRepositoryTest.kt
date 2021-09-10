@@ -2,7 +2,7 @@ package camp.nextstep.edu.data.repository
 
 import camp.nextstep.edu.data.local.MemosLocalSource
 import camp.nextstep.edu.domain.Memo
-import camp.nextstep.edu.domain.MemosSource
+import camp.nextstep.edu.domain.MemosRepository
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -17,19 +17,19 @@ import org.junit.jupiter.api.assertAll
  */
 
 class MemosRepositoryTest {
-    lateinit var memosRepository: MemosRepository
-    lateinit var memosLocalSource: MemosSource
+    private lateinit var memosRepository: MemosRepository
+    private lateinit var memosLocalSource: MemosRepository
 
     @BeforeEach
     fun setUp() {
         memosLocalSource = mockk(relaxed = true)
-        memosRepository = MemosRepository(memosLocalSource)
+        memosRepository = RealMemosRepository(memosLocalSource)
     }
 
     @Test
     fun `메모를 저장하고 꺼내올 수 있다`() {
         // given
-        val memoRepository = MemosRepository(MemosLocalSource())
+        val memoRepository = RealMemosRepository(MemosLocalSource())
         val memo = Memo(
             title = "title",
             content = "content",
@@ -45,16 +45,6 @@ class MemosRepositoryTest {
             { assertThat(retrieveMemos.size).isEqualTo(1) },
             { assertThat(retrieveMemos).isEqualTo(listOf(memo)) },
         )
-    }
-
-    @Test
-    fun `메모 저장소는 싱글턴 객체이다`() {
-        // given
-        val memoRepository1 = MemosRepository.getInstance()
-        val memoRepository2 = MemosRepository.getInstance()
-
-        // then
-        assertThat(memoRepository1).isEqualTo(memoRepository2)
     }
 
     @Test
@@ -96,7 +86,7 @@ class MemosRepositoryTest {
     @Test
     fun `특정 id의 메모를 불러올 수 있다`() {
         // given
-        val memoRepository = MemosRepository(MemosLocalSource())
+        val memoRepository = RealMemosRepository(MemosLocalSource())
         val memo = Memo(
             title = "title",
             content = "content",
@@ -114,7 +104,7 @@ class MemosRepositoryTest {
     @Test
     fun `저장되어 있지 않은 메모 id로 메모를 가져오면 null을 반환한다`() {
         // given
-        val memoRepository = MemosRepository(MemosLocalSource())
+        val memoRepository = RealMemosRepository(MemosLocalSource())
 
         // when
         val actualMemo = memoRepository.getMemo("1")
@@ -162,7 +152,7 @@ class MemosRepositoryTest {
             content = "content",
             id = "1"
         )
-        val memoRepository = MemosRepository(MemosLocalSource(listOf(memo)))
+        val memoRepository = RealMemosRepository(MemosLocalSource(listOf(memo)))
 
         // when
         memoRepository.deleteMemo(memo.id)
